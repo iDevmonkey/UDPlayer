@@ -8,6 +8,7 @@
 
 #import "UDDemuxerFrame.h"
 #import "Extension/Frame.h"
+#import "IUDDemuxer.h"
 
 using namespace std;
 using namespace mediakit;
@@ -19,6 +20,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithFrame:(const Frame::Ptr &)frame;
 
 - (instancetype)initWithData:(void *)data len:(int)len trackType:(int)trackType codecId:(int)codecId dts:(uint32_t)dts pts:(uint32_t)pts;
+
+- (instancetype)initWithFrame_:(UDRTXPDEmuxerFrame)frame;
 
 @end
 

@@ -50,12 +50,12 @@ GLfloat quadTextureData[] = {
     1.0f, 0.0f,
 };
 
-GLfloat quadVertexData[] = {
-    -1.0f, -1.0f,
-    1.0f, -1.0f,
-    -1.0f, 1.0f,
-    1.0f, 1.0f,
-};
+//GLfloat quadVertexData[] = {
+//    -1.0f, -1.0f,
+//    1.0f, -1.0f,
+//    -1.0f, 1.0f,
+//    1.0f, 1.0f,
+//};
 
 
 @interface UDRenderView ()
@@ -119,7 +119,7 @@ GLfloat quadVertexData[] = {
 {
     @synchronized (self) {
         [super layoutSubviews];
-        
+
         if (!_context || ![EAGLContext setCurrentContext:_context]) {
             return;
         }
@@ -328,27 +328,18 @@ GLfloat quadVertexData[] = {
         }
     }
     
-    static CGSize normalizedSamplingSize;
+    CGSize normalizedSamplingSize = [self getNormalizedSamplingSize:CGSizeMake(frameWidth, frameHeight)];
     
-    if (self.pixelbufferWidth != frameWidth ||
-        self.pixelbufferHeight != frameHeight ||
-        normalizedSamplingSize.width == 0 ||
-        normalizedSamplingSize.height == 0) {
-        
-        normalizedSamplingSize = [self getNormalizedSamplingSize:CGSizeMake(frameWidth, frameHeight)];
-        self.pixelbufferWidth = frameWidth;
-        self.pixelbufferHeight = frameHeight;
-        
-        quadVertexData[0] = -1 * normalizedSamplingSize.width;
-        quadVertexData[1] = -1 * normalizedSamplingSize.height;
-        quadVertexData[2] = normalizedSamplingSize.width;
-        quadVertexData[3] = -1 * normalizedSamplingSize.height;
-        quadVertexData[4] = -1 * normalizedSamplingSize.width;
-        quadVertexData[5] = normalizedSamplingSize.height;
-        quadVertexData[6] = normalizedSamplingSize.width;
-        quadVertexData[7] = normalizedSamplingSize.height;
-    }
+    self.pixelbufferWidth = frameWidth;
+    self.pixelbufferHeight = frameHeight;
     
+    GLfloat quadVertexData [] = {
+        -1 * (GLfloat)normalizedSamplingSize.width, -1 * (GLfloat)normalizedSamplingSize.height,
+        (GLfloat)normalizedSamplingSize.width, -1 * (GLfloat)normalizedSamplingSize.height,
+        -1 * (GLfloat)normalizedSamplingSize.width, (GLfloat)normalizedSamplingSize.height,
+        (GLfloat)normalizedSamplingSize.width, (GLfloat)normalizedSamplingSize.height,
+    };
+
     glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, quadVertexData);
     glEnableVertexAttribArray(ATTRIB_VERTEX);
     
@@ -607,6 +598,8 @@ GLfloat quadVertexData[] = {
         normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
         normalizedSamplingSize.height = 1.0;;
     }
+    
+//    udlog_error(kModuleName, "viewBounds:%f,%f,contentSize:%f,%f,normalizedSamplingSize:%f,%f", viewBounds.size.width, viewBounds.size.height, contentSize.width, contentSize.height, normalizedSamplingSize.width, normalizedSamplingSize.height);
     
     return normalizedSamplingSize;
 }

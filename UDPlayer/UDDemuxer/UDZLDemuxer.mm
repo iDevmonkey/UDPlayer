@@ -90,7 +90,7 @@ using namespace mediakit;
     }
     
     if (_demuxer) {
-        _demuxer->teardown();
+//        _demuxer->teardown();
         _demuxer = NULL;
     }
 }

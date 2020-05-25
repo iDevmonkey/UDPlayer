@@ -313,11 +313,11 @@
 		040341CC24716C270093ABBE /* UDDemuxer */ = {
 			isa = PBXGroup;
 			children = (
-				0403423E2471726B0093ABBE /* UDZLDemuxer.mm */,
 				040341E424716C7D0093ABBE /* IUDDemuxer.h */,
 				040341E624716C7D0093ABBE /* UDRTXPDemuxer.h */,
 				040341E524716C7D0093ABBE /* UDRTXPDemuxer.mm */,
 				040341E224716C7D0093ABBE /* UDZLDemuxer.h */,
+				0403423E2471726B0093ABBE /* UDZLDemuxer.mm */,
 			);
 			name = UDDemuxer;
 			sourceTree = "<group>";
