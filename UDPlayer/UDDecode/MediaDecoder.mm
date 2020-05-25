@@ -72,14 +72,16 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
 - (void)startDecodeFrame:(UDDemuxerFrame *)frame
 {
     if (frame.configFrame || !_configExtra || !_configExtra.available) {
-        [self getConfigFrameExtraFromFrame:frame];
+        if (!_configExtra || !_configExtra.available) {
+            [self getConfigFrameExtraFromFrame:frame];
+        }
         
         return;
     }
         
     // create decoder
     if (!_deocderSession) {
-        [self setDecoderWithSPS:_configExtra.sps PPS:_configExtra.f_pps];
+        [self setDecoderWithExtraData];
     }
     
     [self decodeOneVideoFrame2:frame userData:NULL];
@@ -92,6 +94,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
 - (void)disponse
 {
     if (_configExtra) {
+        [_configExtra dispose];
         _configExtra = nil;
     }
     
@@ -220,9 +223,9 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     return true;
 }
 
-- (void)setDecoderWithSPS:(NSData *)sps PPS:(NSData*)pps {
-    const uint8_t* const parameterSetPointers[2] = { (uint8_t*)sps.bytes, (uint8_t *)pps.bytes };
-    const size_t parameterSetSizes[2] = { [sps length], [pps length] };
+- (void)setDecoderWithExtraData {
+    const uint8_t* const parameterSetPointers[2] = { [_configExtra getSps], [_configExtra getFpps] };
+    const size_t parameterSetSizes[2] = { static_cast<size_t>([_configExtra spsSize]), static_cast<size_t>([_configExtra fppsSize]) };
     OSStatus status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
                                                                           2, //param count
                                                                           parameterSetPointers,
@@ -230,9 +233,11 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
                                                                           4, //nal start code size
                                                                           &_decoderFormatDescription);
     if(status != noErr) {
-        NSLog(@"CMVideoFormatDescriptionCreateFromH264ParameterSets failed status=%d", (int)status);
+        udlog_error("MeidaDecoder","CMVideoFormatDescriptionCreateFromH264ParameterSets failed status=%d",(int)status);
     }
+    
     if(![self ResetDecompressionSession]){
+        udlog_error("MeidaDecoder","setDecoderWithSPS ResetDecompressionSession failed.");
     }
 }
 
@@ -253,7 +258,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     CMSampleBufferRef sample_buffer = [self CreateSampleBufferFrom:_decoderFormatDescription demux_buff:(void *)data demux_size:dataLen timingInfo:timingInfo];
     
     VTDecodeInfoFlags flags_out;
-    VTDecodeFrameFlags decode_flags = kVTDecodeFrame_EnableAsynchronousDecompression | kVTDecodeFrame_1xRealTimePlayback ;
+    VTDecodeFrameFlags decode_flags = kVTDecodeFrame_EnableAsynchronousDecompression | kVTDecodeFrame_1xRealTimePlayback;
     OSStatus status = VTDecompressionSessionDecodeFrame( _deocderSession,
                                                         sample_buffer,
                                                         decode_flags,
@@ -270,7 +275,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     }
     CFRelease(sample_buffer);
     if (status != noErr) {
-        NSLog(@"VTDecompressionSessionDecodeFrame err:%d",status);
+        udlog_error("MeidaDecoder","VTDecompressionSessionDecodeFrame err:%d", status);
         return false;
     }
     return true;
@@ -296,31 +301,39 @@ inline CFDictionaryRef CreateCFDictionary(CFTypeRef* keys,
         _configExtra = [[UDConfigFrameExtra alloc] init];
     }
     
-    uint8_t *data = frame.data + frame.prefixSize;
+    uint8_t *_data = frame.data + frame.prefixSize;
     uint32_t size = frame.dataSize - frame.prefixSize;
-    NSData *frameData = [NSData dataWithBytes:data length:size];
     
+    uint8_t *data = (uint8_t *)malloc(size);
+    memcpy(data, _data, size);
+
     if (frame.codecId == UDCodecH264) {
         if (frame.naleType == UDH264Nal_SPS) {
-            _configExtra.sps = frameData;
+            [_configExtra setSps:data];
+            [_configExtra setSpsSize:size];
         }
         else if (frame.naleType == UDH264Nal_PPS) {
-            _configExtra.f_pps = frameData;
+            [_configExtra setFpps:data];
+            [_configExtra setFppsSize:size];
         }
     }
     else if (frame.codecId == UDCodecH265) {
         if (frame.naleType == UDH265Nal_VPS) {
-            _configExtra.vps = frameData;
+            [_configExtra setVps:data];
+            [_configExtra setVpsSize:size];
         }
         else if (frame.naleType == UDH264Nal_SPS) {
-            _configExtra.sps = frameData;
+            [_configExtra setSps:data];
+            [_configExtra setSpsSize:size];
         }
         else if (frame.naleType == UDH264Nal_PPS) {
-            if (_configExtra.f_pps == nil || _configExtra.f_pps.length <= 0) {
-                _configExtra.f_pps = frameData;
+            if ([_configExtra getFpps] == NULL || _configExtra.fppsSize <= 0) {
+               [_configExtra setFpps:data];
+                [_configExtra setFppsSize:size];
             }
-            else if (_configExtra.r_pps == nil || _configExtra.r_pps.length <= 0) {
-                _configExtra.r_pps = frameData;
+            else if ([_configExtra getRpps] == NULL || _configExtra.rppsSize <= 0) {
+                [_configExtra setRpps:data];
+                [_configExtra setRppsSize:size];
             }
         }
     }

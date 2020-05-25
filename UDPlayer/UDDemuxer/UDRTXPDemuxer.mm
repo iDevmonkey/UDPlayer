@@ -40,16 +40,15 @@
 
 #pragma mark - Public
 
-- (void)setOption:(NSString *)key value:(NSObject *)value
+- (void)setOption:(NSString *)key stringValue:(NSString *)value
 {
     if (!key || !value) return;
     
-    if ([value isKindOfClass:[NSString class]]) {
-        mk_player_set_option(_demuxer, [key UTF8String], [(NSString *)value UTF8String]);
-    }
-    else if ([value isKindOfClass:[NSNumber class]]) {
-        mk_player_set_option(_demuxer, [key UTF8String], [[(NSNumber *)value stringValue] UTF8String]);
-    }
+    mk_player_set_option(_demuxer, [key UTF8String], [value UTF8String]);
+}
+
+- (void)setOption:(NSString *)key intValue:(int)value {
+    [self setOption:key stringValue:[@(value) stringValue]];
 }
 
 - (void)start:(NSString *)url
@@ -170,10 +169,10 @@
     }
 }
 
-- (void)onDemuxerDataCallback:(UDDemuxerFrame *)demuxerFrame
+- (void)onDemuxerDataCallback:(UDRTXPDEmuxerFrame)demuxerFrame
 {
-    if ([self.delegate respondsToSelector:@selector(demuxer:onData:userData:)]) {
-        [self.delegate demuxer:self onData:demuxerFrame userData:NULL];
+    if ([self.delegate respondsToSelector:@selector(demuxer:onData3:userData:)]) {
+        [self.delegate demuxer:self onData3:demuxerFrame userData:NULL];
     }
 }
 
@@ -204,8 +203,17 @@ void on_mk_play_data_callback(void *user_data,int track_tycpe,int codec_id,void 
 {
     __strong UDRTXPDemuxer *strong_obj = (__bridge UDRTXPDemuxer *)user_data;
     
-    UDZLDemuxerFrame *frame = [[UDZLDemuxerFrame alloc] initWithData:data len:len trackType:track_tycpe codecId:codec_id dts:dts pts:pts];
-    [strong_obj onDemuxerDataCallback:frame];
+//    UDZLDemuxerFrame *frame = [[UDZLDemuxerFrame alloc] initWithData:data len:len trackType:track_tycpe codecId:codec_id dts:dts pts:pts];
+    
+    UDRTXPDEmuxerFrame frame_;
+    
+    frame_.data = (uint8_t *)data;
+    frame_.len = len;
+    frame_.track_tycpe = track_tycpe;
+    frame_.codec_id = codec_id;
+    frame_.dts = dts;
+    frame_.pts = pts;
+    [strong_obj onDemuxerDataCallback:frame_];
 }
 
 void on_mk_play_shutdown_callback(void *user_data,int err_code,const char *err_msg)

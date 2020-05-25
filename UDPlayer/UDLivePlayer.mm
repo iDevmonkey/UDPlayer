@@ -20,6 +20,8 @@
 #import "UDRenderView.h"
 #import "GLView.h"
 #import "UDGCDTimer.h"
+#import "UDPlayerItem.h"
+#import "UDRTXPDemuxer.h"
 
 using namespace std;
 using namespace toolkit;
@@ -43,13 +45,15 @@ using namespace mediakit;
 
 @property (nonatomic, strong) UDGCDTimer                *timer;
 
+@property (nonatomic, strong) UDPlayerItem              *playerItem;
+
+@property (nonatomic, assign) BOOL                      starting;
+
 @end
 
 @implementation UDLivePlayer
 {
     BOOL _aspectFit;
-    
-    BOOL _starting;
 }
 
 @synthesize delegate = _delegate;
@@ -62,6 +66,8 @@ using namespace mediakit;
         
         _demuxer = [[UDZLDemuxer alloc] init];
         _demuxer.delegate = self;
+        
+        _playerItem = [[UDPlayerItem alloc] init];
         
         _aspectFit = YES;
         _starting = NO;
@@ -180,7 +186,11 @@ using namespace mediakit;
 
 - (void)displayLinkCallbac
 {
+    if (!_starting) {
+        return;
+    }
     
+    [self onDrawFrame];
 }
 
 #pragma mark - Demuxer Delegate
@@ -224,9 +234,20 @@ using namespace mediakit;
     });
 }
 
+- (void)demuxer:(NSObject<IUDDemuxer> *)demuxer onData:(UDDemuxerFrame *)demuxerFrame userData:(void *)userData
+{
+    [self onDecodeForFrame:demuxerFrame];
+}
+
 - (void)demuxer:(NSObject<IUDDemuxer> *)demuxer onData2:(const Frame::Ptr &)frame userData:(void *)userData
 {
     UDZLDemuxerFrame *demuxerFrame = [[UDZLDemuxerFrame alloc] initWithFrame:frame];
+    [self onDecodeForFrame:demuxerFrame];
+}
+
+- (void)demuxer:(NSObject<IUDDemuxer> *)demuxer onData3:(UDRTXPDEmuxerFrame)frame userData:(void *)userData
+{
+    UDZLDemuxerFrame *demuxerFrame = [[UDZLDemuxerFrame alloc] initWithFrame_:frame];
     [self onDecodeForFrame:demuxerFrame];
 }
 
@@ -234,10 +255,28 @@ using namespace mediakit;
 
 - (void)onDecoded:(UDRenderFrame *)renderFrame isFirstFrame:(BOOL)isFirstFrame
 {
-    _starting = YES;
+//    UDWeakify(self)
+//    
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//            
+//            UDStrongify(weak_obj);
+//            
+//            [strong_obj.renderView drawFrame:renderFrame];
+//            
+//    //        [self.renderView drawFrame:renderFrame];
+//        });
+//    
     
+    UDWeakify(self)
+
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self.renderView drawFrame:renderFrame];
+
+        UDStrongify(weak_obj);
+
+        [strong_obj.playerItem addPlayerItemValidFrames:renderFrame];
+
+        strong_obj.starting = YES;
+
     });
     
     
@@ -278,7 +317,19 @@ using namespace mediakit;
 
 - (void)onDrawFrame
 {
-    
+    UDWeakify(self)
+        
+    dispatch_async(dispatch_get_main_queue(), ^{
+        
+        UDStrongify(weak_obj)
+        
+        UDRenderFrame *frame = [strong_obj.playerItem getNextPlayerItemValidFrames];
+        
+        if (frame) {
+            [strong_obj.playerItem removePlayerItemValidFrames:frame];
+            [strong_obj.renderView drawFrame:frame];
+        }
+    });
 }
 
 #pragma mark - Getter & Setter

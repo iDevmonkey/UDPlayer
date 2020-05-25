@@ -61,6 +61,23 @@
     return self;
 }
 
+- (instancetype)initWithFrame_:(UDRTXPDEmuxerFrame)frame
+{
+    self = [super init];
+    if (self) {
+        _data = (uint8_t *)frame.data;
+        _dataSize = frame.len;
+        
+        self.trackType = (UDTrackType)(frame.track_tycpe);
+        self.codecId = (UDCodecId)(frame.codec_id);
+        self.dts = frame.dts;
+        self.pts = frame.pts;
+        
+        [self initFrame];
+    }
+    return self;
+}
+
 - (void)initFrame
 {
     self.prefixSize = [self getPrefixSize];

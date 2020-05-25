@@ -157,8 +157,8 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     
     OSStatus status;
     if (frame.codecId == UDCodecH264) {
-        const uint8_t *const parameterSetPointers[2] = {(uint8_t *)configExtra.sps.bytes, (uint8_t *)configExtra.f_pps.bytes};
-        const size_t parameterSetSizes[2] = {static_cast<size_t>(configExtra.sps.length), static_cast<size_t>(configExtra.f_pps.length)};
+        const uint8_t *const parameterSetPointers[2] = {[configExtra getSps], [configExtra getFpps]};
+        const size_t parameterSetSizes[2] = {static_cast<size_t>([configExtra spsSize]), static_cast<size_t>([configExtra fppsSize])};
         status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
                                                                      2,
                                                                      parameterSetPointers,
@@ -166,9 +166,9 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
                                                                      4,
                                                                      videoDescRef);
     }else if (frame.codecId == UDCodecH265) {
-        if (configExtra.r_pps.length == 0) {
-            const uint8_t *const parameterSetPointers[3] = {(uint8_t *)configExtra.vps.bytes, (uint8_t *)configExtra.sps.bytes, (uint8_t *)configExtra.f_pps.bytes};
-            const size_t parameterSetSizes[3] = {static_cast<size_t>(configExtra.vps.length), static_cast<size_t>(configExtra.sps.length), static_cast<size_t>(configExtra.f_pps.length)};
+        if (configExtra.rppsSize == 0) {
+            const uint8_t *const parameterSetPointers[3] = {[configExtra getVps], [configExtra getSps], [configExtra getFpps]};
+            const size_t parameterSetSizes[3] = {static_cast<size_t>([configExtra vpsSize]), static_cast<size_t>([configExtra spsSize]), static_cast<size_t>([configExtra fppsSize])};
             if (@available(iOS 11.0, *)) {
                 status = CMVideoFormatDescriptionCreateFromHEVCParameterSets(kCFAllocatorDefault,
                                                                              3,
@@ -182,8 +182,8 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
                 udlog_error(kModuleName, "%s: System version is too low!",__func__);
             }
         } else {
-            const uint8_t *const parameterSetPointers[4] = {(uint8_t *)configExtra.vps.bytes, (uint8_t *)configExtra.sps.bytes, (uint8_t *)configExtra.f_pps.bytes, (uint8_t *)configExtra.r_pps.bytes};
-            const size_t parameterSetSizes[4] = {static_cast<size_t>(configExtra.vps.length), static_cast<size_t>(configExtra.sps.length), static_cast<size_t>(configExtra.f_pps.length), static_cast<size_t>(configExtra.r_pps.length)};
+            const uint8_t *const parameterSetPointers[4] = {[configExtra getVps], [configExtra getSps], [configExtra getFpps], [configExtra getRpps]};
+            const size_t parameterSetSizes[4] = {static_cast<size_t>([configExtra vpsSize]), static_cast<size_t>([configExtra spsSize]), static_cast<size_t>([configExtra fppsSize]), static_cast<size_t>([configExtra fppsSize])};
             if (@available(iOS 11.0, *)) {
                 status = CMVideoFormatDescriptionCreateFromHEVCParameterSets(kCFAllocatorDefault,
                                                                              4,
@@ -480,36 +480,42 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
 
 #pragma mark - Other
 
-- (void)getConfigFrameExtraFromFrame:(UDDemuxerFrame *)frame {
+- (void)getConfigFrameExtraFromFrame:(UDDemuxerFrame *)frame
+{
     if (!_configExtra) {
         _configExtra = [[UDConfigFrameExtra alloc] init];
     }
     
     uint8_t *data = frame.data + frame.prefixSize;
     uint32_t size = frame.dataSize - frame.prefixSize;
-    NSData *frameData = [NSData dataWithBytes:data length:size];
-    
+
     if (frame.codecId == UDCodecH264) {
         if (frame.naleType == UDH264Nal_SPS) {
-            _configExtra.sps = frameData;
+            [_configExtra setSps:data];
+            [_configExtra setSpsSize:size];
         }
         else if (frame.naleType == UDH264Nal_PPS) {
-            _configExtra.f_pps = frameData;
+            [_configExtra setFpps:data];
+            [_configExtra setFppsSize:size];
         }
     }
     else if (frame.codecId == UDCodecH265) {
         if (frame.naleType == UDH265Nal_VPS) {
-            _configExtra.vps = frameData;
+            [_configExtra setVps:data];
+            [_configExtra setVpsSize:size];
         }
         else if (frame.naleType == UDH264Nal_SPS) {
-            _configExtra.sps = frameData;
+            [_configExtra setSps:data];
+            [_configExtra setSpsSize:size];
         }
         else if (frame.naleType == UDH264Nal_PPS) {
-            if (_configExtra.f_pps == nil || _configExtra.f_pps.length <= 0) {
-                _configExtra.f_pps = frameData;
+            if ([_configExtra getFpps] == NULL || _configExtra.fppsSize <= 0) {
+               [_configExtra setFpps:data];
+                [_configExtra setFppsSize:size];
             }
-            else if (_configExtra.r_pps == nil || _configExtra.r_pps.length <= 0) {
-                _configExtra.r_pps = frameData;
+            else if ([_configExtra getRpps] == NULL || _configExtra.rppsSize <= 0) {
+                [_configExtra setRpps:data];
+                [_configExtra setRppsSize:size];
             }
         }
     }

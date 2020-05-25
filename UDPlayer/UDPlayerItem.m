@@ -7,8 +7,9 @@
 //
 
 #import "UDPlayerItem.h"
+#import "UDMacro.h"
 
-#define kPlayerItemFrameCount     3
+#define kPlayerItemFrameCount     2
 
 @interface UDPlayerItem ()
 
@@ -29,6 +30,22 @@
     }
     
     return self;
+}
+
+- (void)dealloc
+{
+    udlog_info([NSStringFromClass([self class]) UTF8String], "---dealloc---");
+    
+    [self dispose];
+}
+
+- (void)dispose
+{
+    if (_itemOutputFrames)
+    {
+        [_itemOutputFrames removeAllObjects];
+        _itemOutputFrames = nil;
+    }
 }
 
 #pragma mark -
@@ -69,13 +86,15 @@
 
 - (void)_addPlayerItemValidFrames:(UDRenderFrame *)pixelFrame
 {
-    //
     if (!pixelFrame)
     {
         return;
     }
     [self.itemOutputFrames insertObject:pixelFrame atIndex:0];
-    self.itemOutputFrames = [[self.itemOutputFrames subarrayWithRange:NSMakeRange(0, self.itemOutputFrames.count < kPlayerItemFrameCount ? self.itemOutputFrames.count : kPlayerItemFrameCount)] mutableCopy];
+    
+    if (self.itemOutputFrames.count > kPlayerItemFrameCount) {
+        [self.itemOutputFrames removeObjectsInRange:NSMakeRange(kPlayerItemFrameCount, self.itemOutputFrames.count - kPlayerItemFrameCount)];
+    }
 }
 
 - (void)_removePlayerItemValidFrames:(UDRenderFrame *)pixelFrame

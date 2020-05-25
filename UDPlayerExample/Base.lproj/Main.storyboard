@@ -104,13 +104,9 @@
                                 <textInputTraits key="textInputTraits" keyboardType="alphabet"/>
                             </textField>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6yh-D7-BuB">
-                                <rect key="frame" x="187" y="333.5" width="188" height="333.5"/>
+                                <rect key="frame" x="187" y="0.0" width="188" height="667"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="r8s-zg-cTg">
-                                <rect key="frame" x="0.0" y="269" width="375" height="128"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                            </tableView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -123,14 +119,10 @@
                             <constraint firstItem="9fO-Ku-ipw" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="HXf-1d-FU1"/>
                             <constraint firstItem="9fO-Ku-ipw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="IPR-ek-yYP"/>
                             <constraint firstItem="shn-Iy-nlw" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="RiC-Zv-TDz"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="r8s-zg-cTg" secondAttribute="bottom" constant="270" id="TRK-Yy-Xwg"/>
-                            <constraint firstItem="r8s-zg-cTg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="U7V-yR-eCY"/>
-                            <constraint firstAttribute="trailing" secondItem="r8s-zg-cTg" secondAttribute="trailing" id="ZcU-zw-ZfZ"/>
-                            <constraint firstItem="r8s-zg-cTg" firstAttribute="top" secondItem="5n8-qe-1BI" secondAttribute="bottom" constant="184.5" id="aWT-9p-yql"/>
                             <constraint firstAttribute="trailing" secondItem="6yh-D7-BuB" secondAttribute="trailing" id="ckh-wX-M2p"/>
                             <constraint firstAttribute="trailing" secondItem="R5R-gQ-CaQ" secondAttribute="trailing" id="fqU-Lj-CcM"/>
                             <constraint firstItem="shn-Iy-nlw" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="lD0-jT-Tl0"/>
-                            <constraint firstItem="6yh-D7-BuB" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" multiplier="0.5" id="mwu-Wn-qG6"/>
+                            <constraint firstItem="6yh-D7-BuB" firstAttribute="height" secondItem="8bC-Xf-vdC" secondAttribute="height" id="mwu-Wn-qG6"/>
                             <constraint firstItem="R5R-gQ-CaQ" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.5" id="nxR-IC-giE"/>
                             <constraint firstAttribute="trailing" secondItem="5n8-qe-1BI" secondAttribute="trailing" constant="20" id="o8Z-W5-DJA"/>
                             <constraint firstItem="shn-Iy-nlw" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="r4k-9M-Lrm"/>

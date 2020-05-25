@@ -21,9 +21,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 * 设置配置选项
 * @param key 配置项键,支持 net_adapter/rtp_type/rtsp_user/rtsp_pwd/protocol_timeout_ms/media_timeout_ms/beat_interval_ms/max_analysis_ms
-* @param value 配置项值,类型支持NSString或者NSNumber
+* @param value 配置项值
 */
-- (void)setOption:(NSString *)key value:(NSObject *)value;
+- (void)setOption:(NSString *)key stringValue:(NSString *)value;
+- (void)setOption:(NSString *)key intValue:(int)value;
 
 /**
 * 开始url
