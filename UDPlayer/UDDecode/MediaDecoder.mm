@@ -81,7 +81,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
         
     // create decoder
     if (!_deocderSession) {
-        [self setDecoderWithExtraData];
+        [self setDecoderWithExtraData:frame];
     }
     
     [self decodeOneVideoFrame2:frame userData:NULL];
@@ -223,15 +223,53 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     return true;
 }
 
-- (void)setDecoderWithExtraData {
-    const uint8_t* const parameterSetPointers[2] = { [_configExtra getSps], [_configExtra getFpps] };
-    const size_t parameterSetSizes[2] = { static_cast<size_t>([_configExtra spsSize]), static_cast<size_t>([_configExtra fppsSize]) };
-    OSStatus status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
-                                                                          2, //param count
-                                                                          parameterSetPointers,
-                                                                          parameterSetSizes,
-                                                                          4, //nal start code size
-                                                                          &_decoderFormatDescription);
+- (void)setDecoderWithExtraData:(UDDemuxerFrame *)frame {
+    OSStatus status;
+    if (frame.codecId == UDCodecH264) {
+        const uint8_t *const parameterSetPointers[2] = {[_configExtra getSps], [_configExtra getFpps]};
+        const size_t parameterSetSizes[2] = {static_cast<size_t>([_configExtra spsSize]), static_cast<size_t>([_configExtra fppsSize])};
+        status = CMVideoFormatDescriptionCreateFromH264ParameterSets(kCFAllocatorDefault,
+                                                                     2,
+                                                                     parameterSetPointers,
+                                                                     parameterSetSizes,
+                                                                     4,
+                                                                     &_decoderFormatDescription);
+    }else if (frame.codecId == UDCodecH265) {
+        if (_configExtra.rppsSize == 0) {
+            const uint8_t *const parameterSetPointers[3] = {[_configExtra getVps], [_configExtra getSps], [_configExtra getFpps]};
+            const size_t parameterSetSizes[3] = {static_cast<size_t>([_configExtra vpsSize]), static_cast<size_t>([_configExtra spsSize]), static_cast<size_t>([_configExtra fppsSize])};
+            if (@available(iOS 11.0, *)) {
+                status = CMVideoFormatDescriptionCreateFromHEVCParameterSets(kCFAllocatorDefault,
+                                                                             3,
+                                                                             parameterSetPointers,
+                                                                             parameterSetSizes,
+                                                                             4,
+                                                                             NULL,
+                                                                             &_decoderFormatDescription);
+            } else {
+                status = -1;
+                udlog_error(kModuleName, "%s: System version is too low!",__func__);
+            }
+        } else {
+            const uint8_t *const parameterSetPointers[4] = {[_configExtra getVps], [_configExtra getSps], [_configExtra getFpps], [_configExtra getRpps]};
+            const size_t parameterSetSizes[4] = {static_cast<size_t>([_configExtra vpsSize]), static_cast<size_t>([_configExtra spsSize]), static_cast<size_t>([_configExtra fppsSize]), static_cast<size_t>([_configExtra rppsSize])};
+            if (@available(iOS 11.0, *)) {
+                status = CMVideoFormatDescriptionCreateFromHEVCParameterSets(kCFAllocatorDefault,
+                                                                             4,
+                                                                             parameterSetPointers,
+                                                                             parameterSetSizes,
+                                                                             4,
+                                                                             NULL,
+                                                                             &_decoderFormatDescription);
+            } else {
+                status = -1;
+                udlog_error(kModuleName, "%s: System version is too low!",__func__);
+            }
+        }
+    }else {
+        status = -1;
+    }
+    
     if(status != noErr) {
         udlog_error("MeidaDecoder","CMVideoFormatDescriptionCreateFromH264ParameterSets failed status=%d",(int)status);
     }

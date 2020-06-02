@@ -15,6 +15,8 @@
 @property (nonatomic, strong) UDLivePlayer *player3;
 @property (nonatomic, strong) UDLivePlayer *player4;
 
+
+
 @end
 
 @implementation VC_player
@@ -42,19 +44,22 @@
     _player = [[UDLivePlayer alloc] initWithConvas:screen];
     _player.delegate = self;
 
-    _player2 = [[UDLivePlayer alloc] initWithConvas:screen2];
-    _player2.delegate = self;
-
+//    _player2 = [[UDLivePlayer alloc] initWithConvas:screen2];
+//    _player2.delegate = self;
+//
     _player3 = [[UDLivePlayer alloc] initWithConvas:screen3];
     _player3.delegate = self;
-
+//
     _player4 = [[UDLivePlayer alloc] initWithConvas:screen4];
+    [_player4 setAspectFit:NO];
     _player4.delegate = self;
 
     [_player play:txt_url.text];
-    [_player2 play:txt_url.text];
+//    [_player2 play:txt_url.text];
     [_player3 play:txt_url.text];
     [_player4 play:txt_url.text];
+    
+    
 }
 
 - (void)viewDidDisappear:(BOOL)animated

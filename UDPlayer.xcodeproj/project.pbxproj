@@ -36,7 +36,6 @@
 		040341F024716CEC0093ABBE /* UDLivePlayer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 0403418E247168110093ABBE /* UDLivePlayer.h */; };
 		0403423F2471726B0093ABBE /* UDZLDemuxer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0403423E2471726B0093ABBE /* UDZLDemuxer.mm */; };
 		040342412471744C0093ABBE /* UDUtils.mm in Sources */ = {isa = PBXBuildFile; fileRef = 040342402471744C0093ABBE /* UDUtils.mm */; };
-		0444CDE224742929008A3F01 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0444CDE124742929008A3F01 /* UIKit.framework */; };
 		0444CDE424742933008A3F01 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0444CDE324742933008A3F01 /* CoreGraphics.framework */; };
 		0444CDE624742942008A3F01 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0444CDE524742942008A3F01 /* Foundation.framework */; };
 		0444CE0E2474CCE2008A3F01 /* UDGCDTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0444CE0D2474CCE2008A3F01 /* UDGCDTimer.m */; };
@@ -52,7 +51,12 @@
 		04E1292C247A1DDF000C5F60 /* UDPlayerExampleUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 04E1292B247A1DDF000C5F60 /* UDPlayerExampleUITests.m */; };
 		04E12937247A1E3B000C5F60 /* libUDPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034179247167640093ABBE /* libUDPlayer.a */; };
 		04E1293A247A2091000C5F60 /* VC_player.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04E12939247A2091000C5F60 /* VC_player.mm */; };
-		04E1293C247A20F9000C5F60 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 04E1293B247A20F9000C5F60 /* VideoToolbox.framework */; };
+		74BD905024854A06007B19A7 /* UDVLCPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 74BD904D24854A06007B19A7 /* UDVLCPlayer.m */; };
+		74BD905124854A06007B19A7 /* UDPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 74BD904F24854A06007B19A7 /* UDPlayer.mm */; };
+		74BD907F2485F45B007B19A7 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD907E2485F45B007B19A7 /* VideoToolbox.framework */; };
+		74BD90812485F461007B19A7 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD90802485F461007B19A7 /* CoreMedia.framework */; };
+		74BD90832485F475007B19A7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD90822485F474007B19A7 /* AudioToolbox.framework */; };
+		74BD90852485F488007B19A7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD90842485F488007B19A7 /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,7 +140,6 @@
 		040341EE24716C9E0093ABBE /* UDRenderRGBShader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; name = UDRenderRGBShader.vsh; path = UDRenderView/Shaders/UDRenderRGBShader.vsh; sourceTree = "<group>"; };
 		0403423E2471726B0093ABBE /* UDZLDemuxer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UDZLDemuxer.mm; path = UDDemuxer/UDZLDemuxer.mm; sourceTree = "<group>"; };
 		040342402471744C0093ABBE /* UDUtils.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UDUtils.mm; path = UDUtils/UDUtils.mm; sourceTree = "<group>"; };
-		0444CDE124742929008A3F01 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0444CDE324742933008A3F01 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		0444CDE524742942008A3F01 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		0444CE0C2474CCE2008A3F01 /* UDGCDTimer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDGCDTimer.h; path = UDUtils/UDGCDTimer.h; sourceTree = "<group>"; };
@@ -163,7 +166,16 @@
 		04E1292D247A1DDF000C5F60 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		04E12938247A2091000C5F60 /* VC_player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VC_player.h; sourceTree = "<group>"; };
 		04E12939247A2091000C5F60 /* VC_player.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = VC_player.mm; sourceTree = "<group>"; };
-		04E1293B247A20F9000C5F60 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		74BD904B24854A06007B19A7 /* IUDPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = IUDPlayer.h; path = UDPlayer/IUDPlayer.h; sourceTree = "<group>"; };
+		74BD904C24854A06007B19A7 /* UDVLCPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDVLCPlayer.h; path = UDPlayer/UDVLCPlayer.h; sourceTree = "<group>"; };
+		74BD904D24854A06007B19A7 /* UDVLCPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UDVLCPlayer.m; path = UDPlayer/UDVLCPlayer.m; sourceTree = "<group>"; };
+		74BD904E24854A06007B19A7 /* UDPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDPlayer.h; path = UDPlayer/UDPlayer.h; sourceTree = "<group>"; };
+		74BD904F24854A06007B19A7 /* UDPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = UDPlayer.mm; path = UDPlayer/UDPlayer.mm; sourceTree = "<group>"; };
+		74BD905A24854BC9007B19A7 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
+		74BD907E2485F45B007B19A7 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		74BD90802485F461007B19A7 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		74BD90822485F474007B19A7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		74BD90842485F488007B19A7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,7 +185,6 @@
 			files = (
 				0444CDE624742942008A3F01 /* Foundation.framework in Frameworks */,
 				0444CDE424742933008A3F01 /* CoreGraphics.framework in Frameworks */,
-				0444CDE224742929008A3F01 /* UIKit.framework in Frameworks */,
 				040341B0247168BA0093ABBE /* libc++.tbd in Frameworks */,
 				040341AE247168AC0093ABBE /* libz.tbd in Frameworks */,
 				040341AC247168A30093ABBE /* libicucore.tbd in Frameworks */,
@@ -197,7 +208,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				04E1293C247A20F9000C5F60 /* VideoToolbox.framework in Frameworks */,
+				74BD90852485F488007B19A7 /* AVFoundation.framework in Frameworks */,
+				74BD90832485F475007B19A7 /* AudioToolbox.framework in Frameworks */,
+				74BD90812485F461007B19A7 /* CoreMedia.framework in Frameworks */,
+				74BD907F2485F45B007B19A7 /* VideoToolbox.framework in Frameworks */,
 				04E12937247A1E3B000C5F60 /* libUDPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -245,6 +259,7 @@
 		0403417B247167640093ABBE /* UDPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				74BD904A248549F0007B19A7 /* UDPlayer */,
 				040341CF24716C480093ABBE /* UDRenderView */,
 				040341CE24716C3E0093ABBE /* UDUtils */,
 				040341CD24716C360093ABBE /* UDDecode */,
@@ -260,10 +275,13 @@
 		04034190247168530093ABBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				04E1293B247A20F9000C5F60 /* VideoToolbox.framework */,
+				74BD90842485F488007B19A7 /* AVFoundation.framework */,
+				74BD90822485F474007B19A7 /* AudioToolbox.framework */,
+				74BD90802485F461007B19A7 /* CoreMedia.framework */,
+				74BD907E2485F45B007B19A7 /* VideoToolbox.framework */,
+				74BD905A24854BC9007B19A7 /* CoreVideo.framework */,
 				0444CDE524742942008A3F01 /* Foundation.framework */,
 				0444CDE324742933008A3F01 /* CoreGraphics.framework */,
-				0444CDE124742929008A3F01 /* UIKit.framework */,
 				040341AF247168BA0093ABBE /* libc++.tbd */,
 				040341AD247168AC0093ABBE /* libz.tbd */,
 				040341AB247168A20093ABBE /* libicucore.tbd */,
@@ -397,6 +415,18 @@
 				04E1292D247A1DDF000C5F60 /* Info.plist */,
 			);
 			path = UDPlayerExampleUITests;
+			sourceTree = "<group>";
+		};
+		74BD904A248549F0007B19A7 /* UDPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				74BD904B24854A06007B19A7 /* IUDPlayer.h */,
+				74BD904E24854A06007B19A7 /* UDPlayer.h */,
+				74BD904F24854A06007B19A7 /* UDPlayer.mm */,
+				74BD904C24854A06007B19A7 /* UDVLCPlayer.h */,
+				74BD904D24854A06007B19A7 /* UDVLCPlayer.m */,
+			);
+			name = UDPlayer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -559,11 +589,13 @@
 				045B445C2475910600B0FD1E /* UDPlayerItem.m in Sources */,
 				0403423F2471726B0093ABBE /* UDZLDemuxer.mm in Sources */,
 				040341C824716BED0093ABBE /* UDZLDemuxerFrame.mm in Sources */,
+				74BD905124854A06007B19A7 /* UDPlayer.mm in Sources */,
 				040341E124716C740093ABBE /* UDVideoDecoder.mm in Sources */,
 				040341E824716C7D0093ABBE /* UDRTXPDemuxer.mm in Sources */,
 				040341D724716C570093ABBE /* UDRenderView.mm in Sources */,
 				0403418F247168120093ABBE /* UDLivePlayer.mm in Sources */,
 				040341D624716C570093ABBE /* GLView.mm in Sources */,
+				74BD905024854A06007B19A7 /* UDVLCPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -745,6 +777,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/mk_api",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/zltoolkit",
@@ -765,6 +801,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
+				);
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/mk_api",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/zltoolkit",
@@ -789,6 +829,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 3GCH8X5RRH;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
+				);
 				INFOPLIST_FILE = UDPlayerExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -811,6 +855,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 3GCH8X5RRH;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
+				);
 				INFOPLIST_FILE = UDPlayerExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
