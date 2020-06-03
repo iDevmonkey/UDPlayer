@@ -8,13 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		0403418F247168120093ABBE /* UDLivePlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0403418C247168110093ABBE /* UDLivePlayer.mm */; };
-		04034198247168530093ABBE /* libzlmediakit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034191247168530093ABBE /* libzlmediakit.a */; };
-		04034199247168530093ABBE /* libmk_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034192247168530093ABBE /* libmk_api.a */; };
-		0403419A247168530093ABBE /* libzltoolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034193247168530093ABBE /* libzltoolkit.a */; };
-		0403419B247168530093ABBE /* libmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034194247168530093ABBE /* libmpeg.a */; };
-		0403419C247168530093ABBE /* libmov.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034195247168530093ABBE /* libmov.a */; };
-		0403419D247168530093ABBE /* librtp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034196247168530093ABBE /* librtp.a */; };
-		0403419E247168530093ABBE /* libflv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 04034197247168530093ABBE /* libflv.a */; };
 		040341A02471686A0093ABBE /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0403419F2471686A0093ABBE /* GameController.framework */; };
 		040341A2247168720093ABBE /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040341A1247168720093ABBE /* AudioToolbox.framework */; };
 		040341A42471687A0093ABBE /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 040341A32471687A0093ABBE /* VideoToolbox.framework */; };
@@ -57,6 +50,13 @@
 		74BD90812485F461007B19A7 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD90802485F461007B19A7 /* CoreMedia.framework */; };
 		74BD90832485F475007B19A7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD90822485F474007B19A7 /* AudioToolbox.framework */; };
 		74BD90852485F488007B19A7 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74BD90842485F488007B19A7 /* AVFoundation.framework */; };
+		74CB63BC2487CDBD004D3C14 /* libmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63B52487CDBC004D3C14 /* libmpeg.a */; };
+		74CB63BD2487CDBD004D3C14 /* libflv.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63B62487CDBC004D3C14 /* libflv.a */; };
+		74CB63BE2487CDBD004D3C14 /* libzltoolkit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63B72487CDBC004D3C14 /* libzltoolkit.a */; };
+		74CB63BF2487CDBD004D3C14 /* librtp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63B82487CDBD004D3C14 /* librtp.a */; };
+		74CB63C02487CDBD004D3C14 /* libmov.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63B92487CDBD004D3C14 /* libmov.a */; };
+		74CB63C12487CDBD004D3C14 /* libmk_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63BA2487CDBD004D3C14 /* libmk_api.a */; };
+		74CB63C22487CDBD004D3C14 /* libzlmediakit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63BB2487CDBD004D3C14 /* libzlmediakit.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,13 +93,6 @@
 		04034179247167640093ABBE /* libUDPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUDPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0403418C247168110093ABBE /* UDLivePlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UDLivePlayer.mm; sourceTree = "<group>"; };
 		0403418E247168110093ABBE /* UDLivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDLivePlayer.h; sourceTree = "<group>"; };
-		04034191247168530093ABBE /* libzlmediakit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlmediakit.a; path = UDPlayer/ZLMediaKit/lib/libzlmediakit.a; sourceTree = "<group>"; };
-		04034192247168530093ABBE /* libmk_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmk_api.a; path = UDPlayer/ZLMediaKit/lib/libmk_api.a; sourceTree = "<group>"; };
-		04034193247168530093ABBE /* libzltoolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzltoolkit.a; path = UDPlayer/ZLMediaKit/lib/libzltoolkit.a; sourceTree = "<group>"; };
-		04034194247168530093ABBE /* libmpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpeg.a; path = UDPlayer/ZLMediaKit/lib/libmpeg.a; sourceTree = "<group>"; };
-		04034195247168530093ABBE /* libmov.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmov.a; path = UDPlayer/ZLMediaKit/lib/libmov.a; sourceTree = "<group>"; };
-		04034196247168530093ABBE /* librtp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = librtp.a; path = UDPlayer/ZLMediaKit/lib/librtp.a; sourceTree = "<group>"; };
-		04034197247168530093ABBE /* libflv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libflv.a; path = UDPlayer/ZLMediaKit/lib/libflv.a; sourceTree = "<group>"; };
 		0403419F2471686A0093ABBE /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/GameController.framework; sourceTree = DEVELOPER_DIR; };
 		040341A1247168720093ABBE /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
 		040341A32471687A0093ABBE /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/VideoToolbox.framework; sourceTree = DEVELOPER_DIR; };
@@ -176,6 +169,13 @@
 		74BD90802485F461007B19A7 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		74BD90822485F474007B19A7 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		74BD90842485F488007B19A7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		74CB63B52487CDBC004D3C14 /* libmpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmpeg.a; path = UDPlayer/ZLMediaKit/lib/libmpeg.a; sourceTree = "<group>"; };
+		74CB63B62487CDBC004D3C14 /* libflv.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libflv.a; path = UDPlayer/ZLMediaKit/lib/libflv.a; sourceTree = "<group>"; };
+		74CB63B72487CDBC004D3C14 /* libzltoolkit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzltoolkit.a; path = UDPlayer/ZLMediaKit/lib/libzltoolkit.a; sourceTree = "<group>"; };
+		74CB63B82487CDBD004D3C14 /* librtp.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = librtp.a; path = UDPlayer/ZLMediaKit/lib/librtp.a; sourceTree = "<group>"; };
+		74CB63B92487CDBD004D3C14 /* libmov.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmov.a; path = UDPlayer/ZLMediaKit/lib/libmov.a; sourceTree = "<group>"; };
+		74CB63BA2487CDBD004D3C14 /* libmk_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmk_api.a; path = UDPlayer/ZLMediaKit/lib/libmk_api.a; sourceTree = "<group>"; };
+		74CB63BB2487CDBD004D3C14 /* libzlmediakit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlmediakit.a; path = UDPlayer/ZLMediaKit/lib/libzlmediakit.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +183,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74CB63BC2487CDBD004D3C14 /* libmpeg.a in Frameworks */,
+				74CB63BD2487CDBD004D3C14 /* libflv.a in Frameworks */,
+				74CB63BE2487CDBD004D3C14 /* libzltoolkit.a in Frameworks */,
+				74CB63BF2487CDBD004D3C14 /* librtp.a in Frameworks */,
+				74CB63C02487CDBD004D3C14 /* libmov.a in Frameworks */,
+				74CB63C12487CDBD004D3C14 /* libmk_api.a in Frameworks */,
+				74CB63C22487CDBD004D3C14 /* libzlmediakit.a in Frameworks */,
 				0444CDE624742942008A3F01 /* Foundation.framework in Frameworks */,
 				0444CDE424742933008A3F01 /* CoreGraphics.framework in Frameworks */,
 				040341B0247168BA0093ABBE /* libc++.tbd in Frameworks */,
@@ -194,13 +201,6 @@
 				040341A42471687A0093ABBE /* VideoToolbox.framework in Frameworks */,
 				040341A2247168720093ABBE /* AudioToolbox.framework in Frameworks */,
 				040341A02471686A0093ABBE /* GameController.framework in Frameworks */,
-				04034198247168530093ABBE /* libzlmediakit.a in Frameworks */,
-				04034199247168530093ABBE /* libmk_api.a in Frameworks */,
-				0403419A247168530093ABBE /* libzltoolkit.a in Frameworks */,
-				0403419B247168530093ABBE /* libmpeg.a in Frameworks */,
-				0403419C247168530093ABBE /* libmov.a in Frameworks */,
-				0403419D247168530093ABBE /* librtp.a in Frameworks */,
-				0403419E247168530093ABBE /* libflv.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +275,13 @@
 		04034190247168530093ABBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74CB63B62487CDBC004D3C14 /* libflv.a */,
+				74CB63BA2487CDBD004D3C14 /* libmk_api.a */,
+				74CB63B92487CDBD004D3C14 /* libmov.a */,
+				74CB63B52487CDBC004D3C14 /* libmpeg.a */,
+				74CB63B82487CDBD004D3C14 /* librtp.a */,
+				74CB63BB2487CDBD004D3C14 /* libzlmediakit.a */,
+				74CB63B72487CDBC004D3C14 /* libzltoolkit.a */,
 				74BD90842485F488007B19A7 /* AVFoundation.framework */,
 				74BD90822485F474007B19A7 /* AudioToolbox.framework */,
 				74BD90802485F461007B19A7 /* CoreMedia.framework */,
@@ -291,13 +298,6 @@
 				040341A32471687A0093ABBE /* VideoToolbox.framework */,
 				040341A1247168720093ABBE /* AudioToolbox.framework */,
 				0403419F2471686A0093ABBE /* GameController.framework */,
-				04034197247168530093ABBE /* libflv.a */,
-				04034192247168530093ABBE /* libmk_api.a */,
-				04034195247168530093ABBE /* libmov.a */,
-				04034194247168530093ABBE /* libmpeg.a */,
-				04034196247168530093ABBE /* librtp.a */,
-				04034191247168530093ABBE /* libzlmediakit.a */,
-				04034193247168530093ABBE /* libzltoolkit.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

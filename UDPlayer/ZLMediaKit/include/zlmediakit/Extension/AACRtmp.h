@@ -33,16 +33,12 @@ public:
      */
     bool inputRtmp(const RtmpPacket::Ptr &Rtmp, bool key_pos = false) override;
 
-    TrackType getTrackType() const override{
-        return TrackAudio;
-    }
-
     CodecId getCodecId() const override{
         return CodecAAC;
     }
 
 protected:
-    void onGetAAC(const char* pcData, int iLen, uint32_t ui32TimeStamp);
+    void onGetAAC(const char* data, int len, uint32_t stamp);
     AACFrame::Ptr obtainFrame();
 protected:
     AACFrame::Ptr _adts;
