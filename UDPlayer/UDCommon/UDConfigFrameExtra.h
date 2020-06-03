@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "UDDefines.h"
-
-NS_ASSUME_NONNULL_BEGIN
+#import "UDDemuxerFrame.h"
 
 @interface UDConfigFrameExtra : NSObject
 
@@ -22,20 +21,28 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) uint32_t  lastDecodePts;
 
-- (void)setVps:(uint8_t *)vps;
-- (void)setSps:(uint8_t *)sps;
-- (void)setFpps:(uint8_t *)f_pps;
-- (void)setRpps:(uint8_t *)r_pps;
+- (instancetype)initWithCodecId:(UDCodecId)codecId;
+- (BOOL)available;
+- (void)dispose;
+
+#pragma mark - Getter & Setter
+
+- (void)setVps:(uint8_t *)vps size:(int)size;
+- (void)setSps:(uint8_t *)sps size:(int)size;
+- (void)setFpps:(uint8_t *)f_pps size:(int)size;
+- (void)setRpps:(uint8_t *)r_pps size:(int)size;
 
 - (uint8_t *)getVps;
 - (uint8_t *)getSps;
 - (uint8_t *)getFpps;
 - (uint8_t *)getRpps;
 
-- (BOOL)available;
-
-- (void)dispose;
-
 @end
 
-NS_ASSUME_NONNULL_END
+@interface UDConfigFrameExtra (Update)
+
+- (void)updateWithFrame:(UDDemuxerFrame *)frame;
+
+- (BOOL)unavailableForFrame:(UDDemuxerFrame *)frame;
+
+@end

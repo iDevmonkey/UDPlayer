@@ -71,20 +71,33 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
 
 - (void)startDecodeFrame:(UDDemuxerFrame *)frame
 {
-    if (frame.configFrame || !_configExtra || !_configExtra.available) {
-        if (!_configExtra || !_configExtra.available) {
-            [self getConfigFrameExtraFromFrame:frame];
-        }
+    if (frame.codecId == UDCodecH264) {
         
+    }
+    else if (frame.codecId == UDCodecH265){
+        if (frame.naleType == UDH265Nal_SEI_PREFIX ||
+            frame.naleType == UDH265Nal_SEI_SUFFIX) {
+            return;
+        }
+    }
+    
+    if (frame.configFrame) {
+        [self getConfigFrameExtraFromFrame:frame];
+        
+        return;
+    }
+    
+    if (!_configExtra || !_configExtra.available) {
         return;
     }
         
     // create decoder
-    if (!_deocderSession) {
+    if (!_deocderSession)
+    {
         [self setDecoderWithExtraData:frame];
     }
     
-    [self decodeOneVideoFrame2:frame userData:NULL];
+    [self decodeOneVideoFrame:frame userData:NULL];
 }
 - (void)stopDecode
 {
@@ -93,24 +106,16 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
 
 - (void)disponse
 {
-    if (_configExtra) {
-        [_configExtra dispose];
-        _configExtra = nil;
-    }
-    
     if (_delegate) {
         _delegate = nil;
     }
 
+    [self DestroyConfigExtra];
     [self DestroyDecompressionSession];
-    
-    if(_decoderFormatDescription) {
-        CFRelease(_decoderFormatDescription);
-        _decoderFormatDescription = NULL;
-    }
+    [self DestroyFormatDescription];
 }
 
-- (bool)decodeOneVideoFrame2:(UDDemuxerFrame *)frame userData:(void *) userData
+- (bool)decodeOneVideoFrame:(UDDemuxerFrame *)frame userData:(void *) userData
 {
     // Add Frame Header
     uint32_t nalSize = ntohl((uint32_t)(frame.dataSize - 4));
@@ -121,14 +126,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
         .decodeTimeStamp        = CMTimeMake(frame.dts, 1000),
     };
     
-    switch (frame.naleType) {
-        case 0x07:
-        case 0x08:
-            return false;
-        default:
-            return [self decode:frame.data withLen:frame.dataSize userData:userData time:timingInfo];
-            break;
-    }
+    return [self decode:frame.data withLen:frame.dataSize userData:userData time:timingInfo];
 }
 
 #pragma mark - Create / Destory Decoder
@@ -271,21 +269,37 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     }
     
     if(status != noErr) {
-        udlog_error("MeidaDecoder","CMVideoFormatDescriptionCreateFromH264ParameterSets failed status=%d",(int)status);
+        udlog_error(kModuleName,"CMVideoFormatDescriptionCreateFromH264ParameterSets failed status=%d",(int)status);
     }
     
     if(![self ResetDecompressionSession]){
-        udlog_error("MeidaDecoder","setDecoderWithSPS ResetDecompressionSession failed.");
+        udlog_error(kModuleName,"setDecoderWithSPS ResetDecompressionSession failed.");
     }
 }
 
--(void)DestroyDecompressionSession
+- (void)DestroyDecompressionSession
 {
     if (_deocderSession) {
         VTDecompressionSessionWaitForAsynchronousFrames(_deocderSession);
         VTDecompressionSessionInvalidate(_deocderSession);
         CFRelease(_deocderSession);
         _deocderSession = NULL;
+    }
+}
+
+- (void)DestroyFormatDescription
+{
+    if(_decoderFormatDescription) {
+        CFRelease(_decoderFormatDescription);
+        _decoderFormatDescription = NULL;
+    }
+}
+
+- (void)DestroyConfigExtra
+{
+    if (_configExtra) {
+        [_configExtra dispose];
+        _configExtra = nil;
     }
 }
 
@@ -313,7 +327,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     }
     CFRelease(sample_buffer);
     if (status != noErr) {
-        udlog_error("MeidaDecoder","VTDecompressionSessionDecodeFrame err:%d", status);
+        udlog_error(kModuleName,"VTDecompressionSessionDecodeFrame err:%d", status);
         return false;
     }
     return true;
@@ -335,46 +349,22 @@ inline CFDictionaryRef CreateCFDictionary(CFTypeRef* keys,
 
 - (void)getConfigFrameExtraFromFrame:(UDDemuxerFrame *)frame
 {
+    if (_configExtra && [_configExtra unavailableForFrame:frame]) {
+        udlog_info(kModuleName, "ConfigFrameExtra to Destroy Decoder");
+        [self DestroyConfigExtra];
+        [self DestroyDecompressionSession];
+        [self DestroyFormatDescription];
+    }
+        
     if (!_configExtra) {
-        _configExtra = [[UDConfigFrameExtra alloc] init];
+        _configExtra = [[UDConfigFrameExtra alloc] initWithCodecId:frame.codecId];
     }
     
-    uint8_t *_data = frame.data + frame.prefixSize;
-    uint32_t size = frame.dataSize - frame.prefixSize;
+    if (_configExtra.available) {
+        return;
+    }
     
-    uint8_t *data = (uint8_t *)malloc(size);
-    memcpy(data, _data, size);
-
-    if (frame.codecId == UDCodecH264) {
-        if (frame.naleType == UDH264Nal_SPS) {
-            [_configExtra setSps:data];
-            [_configExtra setSpsSize:size];
-        }
-        else if (frame.naleType == UDH264Nal_PPS) {
-            [_configExtra setFpps:data];
-            [_configExtra setFppsSize:size];
-        }
-    }
-    else if (frame.codecId == UDCodecH265) {
-        if (frame.naleType == UDH265Nal_VPS) {
-            [_configExtra setVps:data];
-            [_configExtra setVpsSize:size];
-        }
-        else if (frame.naleType == UDH264Nal_SPS) {
-            [_configExtra setSps:data];
-            [_configExtra setSpsSize:size];
-        }
-        else if (frame.naleType == UDH264Nal_PPS) {
-            if ([_configExtra getFpps] == NULL || _configExtra.fppsSize <= 0) {
-               [_configExtra setFpps:data];
-                [_configExtra setFppsSize:size];
-            }
-            else if ([_configExtra getRpps] == NULL || _configExtra.rppsSize <= 0) {
-                [_configExtra setRpps:data];
-                [_configExtra setRppsSize:size];
-            }
-        }
-    }
+    [_configExtra updateWithFrame:frame];
 }
 
 @end

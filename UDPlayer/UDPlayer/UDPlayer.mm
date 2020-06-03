@@ -307,7 +307,7 @@ using namespace mediakit;
     }
     
     if (_decoder) {
-        udlog_info("decode", "pts: %d, dts:%d",demuxerFrame.pts, demuxerFrame.dts);
+        udlog_info("decode", "naleType: %d, pts: %d, dts:%d", demuxerFrame.naleType,demuxerFrame.pts, demuxerFrame.dts);
         
         [_decoder startDecodeFrame:demuxerFrame];
     }
