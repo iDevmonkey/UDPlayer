@@ -33,6 +33,10 @@
         _convasView = convasView;
         
         _aspectFit = YES;
+        
+        _player = [[UDPlayer alloc] initWithConvas:_convasView];
+        _player.delegate = self;
+        [_player setAspectFit:_aspectFit];
     }
     
     return self;
@@ -49,12 +53,6 @@
 
 - (void)play:(NSString *)url
 {
-    if (_player == nil) {
-        _player = [[UDPlayer alloc] initWithConvas:_convasView];
-        [_player setAspectFit:_aspectFit];
-        _player.delegate = self;
-    }
-    
     [_player play:url];
 }
 

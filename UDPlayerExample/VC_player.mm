@@ -43,6 +43,8 @@
     
     _player = [[UDLivePlayer alloc] initWithConvas:screen];
     _player.delegate = self;
+    [_player setOption:@"rtp_type" intValue:1];//udp
+//    [_player setOption:@"rtp_type" intValue:0];//tcp
 
 //    _player2 = [[UDLivePlayer alloc] initWithConvas:screen2];
 //    _player2.delegate = self;
