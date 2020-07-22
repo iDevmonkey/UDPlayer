@@ -241,20 +241,26 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     
     if (_configExtra) {
         _configExtra = nil;
+        [_configExtra dispose];
     }
     
-    if (_decoderSession) {
-        VTDecompressionSessionWaitForAsynchronousFrames(_decoderSession);
-        VTDecompressionSessionInvalidate(_decoderSession);
-        CFRelease(_decoderSession);
-        _decoderSession = NULL;
-    }
+    [self DestroyDecompressionSession];
     
     if (_decoderFormatDescription) {
         CFRelease(_decoderFormatDescription);
         _decoderFormatDescription = NULL;
     }
     pthread_mutex_unlock(&_decoder_lock);
+}
+
+-(void)DestroyDecompressionSession
+{
+    if (_decoderSession) {
+        VTDecompressionSessionWaitForAsynchronousFrames(_decoderSession);
+        VTDecompressionSessionInvalidate(_decoderSession);
+        CFRelease(_decoderSession);
+        _decoderSession = NULL;
+    }
 }
 
 /*
@@ -482,43 +488,17 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
 
 - (void)getConfigFrameExtraFromFrame:(UDDemuxerFrame *)frame
 {
-    if (!_configExtra) {
-        _configExtra = [[UDConfigFrameExtra alloc] init];
+    if (_configExtra && _configExtra.codecId != frame.codecId) {
+        _configExtra = nil;
+        [self DestroyDecompressionSession];
     }
     
-    uint8_t *data = frame.data + frame.prefixSize;
-    uint32_t size = frame.dataSize - frame.prefixSize;
-
-    if (frame.codecId == UDCodecH264) {
-        if (frame.naleType == UDH264Nal_SPS) {
-            [_configExtra setSps:data];
-            [_configExtra setSpsSize:size];
-        }
-        else if (frame.naleType == UDH264Nal_PPS) {
-            [_configExtra setFpps:data];
-            [_configExtra setFppsSize:size];
-        }
+    if (!_configExtra) {
+        _configExtra = [[UDConfigFrameExtra alloc] initWithCodecId:frame.codecId];
+        _configExtra.codecId = frame.codecId;
     }
-    else if (frame.codecId == UDCodecH265) {
-        if (frame.naleType == UDH265Nal_VPS) {
-            [_configExtra setVps:data];
-            [_configExtra setVpsSize:size];
-        }
-        else if (frame.naleType == UDH264Nal_SPS) {
-            [_configExtra setSps:data];
-            [_configExtra setSpsSize:size];
-        }
-        else if (frame.naleType == UDH264Nal_PPS) {
-            if ([_configExtra getFpps] == NULL || _configExtra.fppsSize <= 0) {
-               [_configExtra setFpps:data];
-                [_configExtra setFppsSize:size];
-            }
-            else if ([_configExtra getRpps] == NULL || _configExtra.rppsSize <= 0) {
-                [_configExtra setRpps:data];
-                [_configExtra setRppsSize:size];
-            }
-        }
-    }
+    
+    [_configExtra updateWithFrame:frame];
 }
 
 /*
