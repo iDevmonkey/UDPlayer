@@ -9,26 +9,25 @@
 #import <Foundation/Foundation.h>
 
 #import "UDRenderFrame.h"
+#import "UDDemuxerFrame.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface UDPlayerItem : NSObject
 
 /**
- *  视频宽高
- */
-@property (nonatomic, assign)   CGFloat         videoWidth;
-@property (nonatomic, assign)   CGFloat         videoHeight;
-
-/**
  *  视频帧操作
  */
-- (NSInteger)playerItemValidFramesCount;
+- (void)addVideoFrame:(UDRenderFrame *)frame;
+- (UDRenderFrame *)getVideoFrame;
+- (void)removeVideoFrame:(UDRenderFrame *)frame;
 
-- (void)addPlayerItemValidFrames:(UDRenderFrame *)pixelFrame;
-- (void)removePlayerItemValidFrames:(UDRenderFrame *)pixelFrame;
-
-- (UDRenderFrame *)getNextPlayerItemValidFrames;
+/**
+ *  音频帧操作
+ */
+- (void)addAudioFrame:(UDDemuxerFrame *)frame;
+- (UDDemuxerFrame *)getAudioFrame;
+- (void)removeAudioFrame:(UDDemuxerFrame *)frame;
 
 @end
 

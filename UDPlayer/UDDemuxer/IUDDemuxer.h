@@ -44,6 +44,8 @@ using namespace mediakit;
 
 - (void)demuxer:(NSObject<IUDDemuxer> *)demuxer onData3:(UDRTXPDEmuxerFrame)frame userData:(void *)userData;
 
+- (void)demuxer:(NSObject<IUDDemuxer> *)demuxer onAudioData:(const Frame::Ptr &)frame userData:(void *)userData;
+
 @end
 
 @protocol IUDDemuxer <NSObject>

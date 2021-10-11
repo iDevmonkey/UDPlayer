@@ -9,7 +9,7 @@
 #import "UDZLDemuxer.h"
 
 #import "Player/MediaPlayer.h"
-#import "Poller/EventPoller.h"
+//#import "Poller/EventPoller.h"
 #import "UDMacro.h"
 #import "UDZLDemuxerFrame.h"
 #import "UDVideoDecoder.h"
@@ -208,6 +208,13 @@ using namespace mediakit;
     }
 }
 
+- (void)onDemuxerAudioDataCallback:(const Frame::Ptr &)frame
+{
+    if ([self.delegate respondsToSelector:@selector(demuxer:onAudioData:userData:)]) {
+        [self.delegate demuxer:self onAudioData:frame userData:NULL];
+    }
+}
+
 #pragma mark - Setting Callback
 
 - (void)setOnShutdownCallback
@@ -280,7 +287,7 @@ using namespace mediakit;
             [strong_obj onDemuxerDataCallback:frame];
         }
         else if (frame->getTrackType() == TrackType::TrackAudio) {
-
+            [strong_obj onDemuxerAudioDataCallback:frame];
         }
         else if (frame->getTrackType() == TrackType::TrackTitle) {
 

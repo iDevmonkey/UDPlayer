@@ -301,7 +301,7 @@ static void onVideoDecoderCallback(void *decompressionOutputRefCon,
     memcpy(*originDataRef, newData, size);
 }
 
-- (void)getNALUInfoWithVideoFormat:(UDCodecId)videoFormat extraData:(uint8_t *)extraData extraDataSize:(int)extraDataSize decoderInfo:(XDXDecoderInfo *)decoderInfo {
+- (void)getNALUInfoWithVideoFormat:(UDCodecId)videoFormat extraData:(uint8_t *)extraData extraDataSize:(int)extraDataSize decoderInfo:(UDDecoderInfo *)decoderInfo {
 
     uint8_t *data = extraData;
     int      size = extraDataSize;

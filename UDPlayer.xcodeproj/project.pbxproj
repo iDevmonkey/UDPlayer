@@ -57,6 +57,14 @@
 		74CB63C02487CDBD004D3C14 /* libmov.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63B92487CDBD004D3C14 /* libmov.a */; };
 		74CB63C12487CDBD004D3C14 /* libmk_api.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63BA2487CDBD004D3C14 /* libmk_api.a */; };
 		74CB63C22487CDBD004D3C14 /* libzlmediakit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CB63BB2487CDBD004D3C14 /* libzlmediakit.a */; };
+		74CD8A492712E19500B504B8 /* UDZLAudioDemuxerFrame.mm in Sources */ = {isa = PBXBuildFile; fileRef = 74CD8A482712E19500B504B8 /* UDZLAudioDemuxerFrame.mm */; };
+		74CD8A582712EB6200B504B8 /* UDThreadSafeMutableArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CD8A572712EB6200B504B8 /* UDThreadSafeMutableArray.m */; };
+		74CD8A6F2712FBC100B504B8 /* libfaad.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CD8A6D2712FBC100B504B8 /* libfaad.a */; };
+		74CD8A702712FBC100B504B8 /* libmp4ff.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 74CD8A6E2712FBC100B504B8 /* libmp4ff.a */; };
+		74CD8A772713D28100B504B8 /* UDAudioDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 74CD8A752713D28100B504B8 /* UDAudioDecoder.m */; };
+		74CD8A862713EDAB00B504B8 /* FAACDecoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 74CD8A852713EDAB00B504B8 /* FAACDecoder.mm */; };
+		74E7CB4E270D9B5F00627460 /* UDAudioPlayer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 74E7CAE2270D9B5F00627460 /* UDAudioPlayer.mm */; };
+		74E7CB4F270D9B5F00627460 /* AudioDec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74E7CAE5270D9B5F00627460 /* AudioDec.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -176,6 +184,20 @@
 		74CB63B92487CDBD004D3C14 /* libmov.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmov.a; path = UDPlayer/ZLMediaKit/lib/libmov.a; sourceTree = "<group>"; };
 		74CB63BA2487CDBD004D3C14 /* libmk_api.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmk_api.a; path = UDPlayer/ZLMediaKit/lib/libmk_api.a; sourceTree = "<group>"; };
 		74CB63BB2487CDBD004D3C14 /* libzlmediakit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libzlmediakit.a; path = UDPlayer/ZLMediaKit/lib/libzlmediakit.a; sourceTree = "<group>"; };
+		74CD8A472712E19500B504B8 /* UDZLAudioDemuxerFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDZLAudioDemuxerFrame.h; sourceTree = "<group>"; };
+		74CD8A482712E19500B504B8 /* UDZLAudioDemuxerFrame.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = UDZLAudioDemuxerFrame.mm; sourceTree = "<group>"; };
+		74CD8A562712EB6200B504B8 /* UDThreadSafeMutableArray.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDThreadSafeMutableArray.h; sourceTree = "<group>"; };
+		74CD8A572712EB6200B504B8 /* UDThreadSafeMutableArray.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UDThreadSafeMutableArray.m; sourceTree = "<group>"; };
+		74CD8A6D2712FBC100B504B8 /* libfaad.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfaad.a; path = UDPlayer/faad/lib/libfaad.a; sourceTree = "<group>"; };
+		74CD8A6E2712FBC100B504B8 /* libmp4ff.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmp4ff.a; path = UDPlayer/faad/lib/libmp4ff.a; sourceTree = "<group>"; };
+		74CD8A752713D28100B504B8 /* UDAudioDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UDAudioDecoder.m; path = UDDecode/UDAudioDecoder.m; sourceTree = "<group>"; };
+		74CD8A762713D28100B504B8 /* UDAudioDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UDAudioDecoder.h; path = UDDecode/UDAudioDecoder.h; sourceTree = "<group>"; };
+		74CD8A842713EDAB00B504B8 /* FAACDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FAACDecoder.h; sourceTree = "<group>"; };
+		74CD8A852713EDAB00B504B8 /* FAACDecoder.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = FAACDecoder.mm; sourceTree = "<group>"; };
+		74E7CAE1270D9B5F00627460 /* UDAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDAudioPlayer.h; sourceTree = "<group>"; };
+		74E7CAE2270D9B5F00627460 /* UDAudioPlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UDAudioPlayer.mm; sourceTree = "<group>"; };
+		74E7CAE5270D9B5F00627460 /* AudioDec.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioDec.cpp; sourceTree = "<group>"; };
+		74E7CAE6270D9B5F00627460 /* AudioDec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AudioDec.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +205,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				74CD8A6F2712FBC100B504B8 /* libfaad.a in Frameworks */,
+				74CD8A702712FBC100B504B8 /* libmp4ff.a in Frameworks */,
 				74CB63BC2487CDBD004D3C14 /* libmpeg.a in Frameworks */,
 				74CB63BD2487CDBD004D3C14 /* libflv.a in Frameworks */,
 				74CB63BE2487CDBD004D3C14 /* libzltoolkit.a in Frameworks */,
@@ -259,6 +283,7 @@
 		0403417B247167640093ABBE /* UDPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				74E7CAE0270D9B5F00627460 /* AudioPlayer */,
 				74BD904A248549F0007B19A7 /* UDPlayer */,
 				040341CF24716C480093ABBE /* UDRenderView */,
 				040341CE24716C3E0093ABBE /* UDUtils */,
@@ -275,6 +300,8 @@
 		04034190247168530093ABBE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				74CD8A6D2712FBC100B504B8 /* libfaad.a */,
+				74CD8A6E2712FBC100B504B8 /* libmp4ff.a */,
 				74CB63B62487CDBC004D3C14 /* libflv.a */,
 				74CB63BA2487CDBD004D3C14 /* libmk_api.a */,
 				74CB63B92487CDBD004D3C14 /* libmov.a */,
@@ -315,6 +342,10 @@
 				040341C124716BED0093ABBE /* UDZLDemuxerFrame.mm */,
 				045B445A2475910600B0FD1E /* UDPlayerItem.h */,
 				045B445B2475910600B0FD1E /* UDPlayerItem.m */,
+				74CD8A472712E19500B504B8 /* UDZLAudioDemuxerFrame.h */,
+				74CD8A482712E19500B504B8 /* UDZLAudioDemuxerFrame.mm */,
+				74CD8A562712EB6200B504B8 /* UDThreadSafeMutableArray.h */,
+				74CD8A572712EB6200B504B8 /* UDThreadSafeMutableArray.m */,
 			);
 			name = UDCommon;
 			sourceTree = "<group>";
@@ -343,6 +374,8 @@
 		040341CD24716C360093ABBE /* UDDecode */ = {
 			isa = PBXGroup;
 			children = (
+				74CD8A762713D28100B504B8 /* UDAudioDecoder.h */,
+				74CD8A752713D28100B504B8 /* UDAudioDecoder.m */,
 				040341DB24716C740093ABBE /* IUDVideoDecoder.h */,
 				040341DE24716C740093ABBE /* MediaDecoder.h */,
 				040341DD24716C740093ABBE /* MediaDecoder.mm */,
@@ -427,6 +460,35 @@
 				74BD904D24854A06007B19A7 /* UDVLCPlayer.m */,
 			);
 			name = UDPlayer;
+			sourceTree = "<group>";
+		};
+		74E7CAE0270D9B5F00627460 /* AudioPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				74E7CAE1270D9B5F00627460 /* UDAudioPlayer.h */,
+				74E7CAE2270D9B5F00627460 /* UDAudioPlayer.mm */,
+				74E7CAE3270D9B5F00627460 /* src */,
+			);
+			path = AudioPlayer;
+			sourceTree = "<group>";
+		};
+		74E7CAE3270D9B5F00627460 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				74E7CAE4270D9B5F00627460 /* AudioDec */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		74E7CAE4270D9B5F00627460 /* AudioDec */ = {
+			isa = PBXGroup;
+			children = (
+				74E7CAE5270D9B5F00627460 /* AudioDec.cpp */,
+				74E7CAE6270D9B5F00627460 /* AudioDec.h */,
+				74CD8A842713EDAB00B504B8 /* FAACDecoder.h */,
+				74CD8A852713EDAB00B504B8 /* FAACDecoder.mm */,
+			);
+			path = AudioDec;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -582,17 +644,23 @@
 			files = (
 				040341C924716BED0093ABBE /* UDRenderFrame.mm in Sources */,
 				0444CE0E2474CCE2008A3F01 /* UDGCDTimer.m in Sources */,
+				74CD8A582712EB6200B504B8 /* UDThreadSafeMutableArray.m in Sources */,
+				74CD8A862713EDAB00B504B8 /* FAACDecoder.mm in Sources */,
 				040341C524716BED0093ABBE /* UDDemuxerFrame.m in Sources */,
 				040341E024716C740093ABBE /* MediaDecoder.mm in Sources */,
 				040342412471744C0093ABBE /* UDUtils.mm in Sources */,
 				040341C724716BED0093ABBE /* UDConfigFrameExtra.m in Sources */,
 				045B445C2475910600B0FD1E /* UDPlayerItem.m in Sources */,
 				0403423F2471726B0093ABBE /* UDZLDemuxer.mm in Sources */,
+				74E7CB4E270D9B5F00627460 /* UDAudioPlayer.mm in Sources */,
+				74E7CB4F270D9B5F00627460 /* AudioDec.cpp in Sources */,
 				040341C824716BED0093ABBE /* UDZLDemuxerFrame.mm in Sources */,
 				74BD905124854A06007B19A7 /* UDPlayer.mm in Sources */,
 				040341E124716C740093ABBE /* UDVideoDecoder.mm in Sources */,
 				040341E824716C7D0093ABBE /* UDRTXPDemuxer.mm in Sources */,
+				74CD8A772713D28100B504B8 /* UDAudioDecoder.m in Sources */,
 				040341D724716C570093ABBE /* UDRenderView.mm in Sources */,
+				74CD8A492712E19500B504B8 /* UDZLAudioDemuxerFrame.mm in Sources */,
 				0403418F247168120093ABBE /* UDLivePlayer.mm in Sources */,
 				040341D624716C570093ABBE /* GLView.mm in Sources */,
 				74BD905024854A06007B19A7 /* UDVLCPlayer.m in Sources */,
@@ -777,18 +845,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/mk_api",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/zltoolkit",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/zlmediakit",
+					"$(PROJECT_DIR)/UDPlayer/faad/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/lib",
+					"$(PROJECT_DIR)/UDPlayer/faad/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -801,18 +868,17 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				HEADER_SEARCH_PATHS = (
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/mk_api",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/zltoolkit",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/include/zlmediakit",
+					"$(PROJECT_DIR)/UDPlayer/faad/include",
 				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/UDPlayer/ZLMediaKit/lib",
+					"$(PROJECT_DIR)/UDPlayer/faad/lib",
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -829,10 +895,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 3GCH8X5RRH;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = UDPlayerExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -855,10 +918,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 3GCH8X5RRH;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/UDPlayer/MobileVLCKit",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = UDPlayerExample/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (

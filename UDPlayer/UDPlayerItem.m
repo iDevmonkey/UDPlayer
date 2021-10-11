@@ -9,13 +9,16 @@
 #import "UDPlayerItem.h"
 #import "UDMacro.h"
 
-#define kPlayerItemFrameCount     2
+#define kVideoFrameCount     2
+#define kAudioFrameCount     2
 
 @interface UDPlayerItem ()
 
-@property (nonatomic, strong) NSMutableArray         *itemOutputFrames;
+@property (nonatomic, strong) NSMutableArray<UDRenderFrame *>  *vFrames;
+@property (nonatomic, strong) NSMutableArray<UDDemuxerFrame *> *aFrames;
 
-@property (nonatomic, strong) dispatch_semaphore_t   bufferSemaphore;
+@property (nonatomic, strong) dispatch_queue_t vSyncQueue;
+@property (nonatomic, strong) dispatch_queue_t aSyncQueue;
 
 @end
 
@@ -26,7 +29,11 @@
     self = [super init];
     if (self)
     {
-        self.itemOutputFrames = [NSMutableArray array];
+        _vFrames = [NSMutableArray<UDRenderFrame *> array];
+        _aFrames = [NSMutableArray<UDDemuxerFrame *> array];
+        
+        _vSyncQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.udplayer_v_%p", self] UTF8String], DISPATCH_QUEUE_CONCURRENT);
+        _aSyncQueue = dispatch_queue_create([[NSString stringWithFormat:@"com.udplayer_a_%p", self] UTF8String], DISPATCH_QUEUE_CONCURRENT);
     }
     
     return self;
@@ -41,65 +48,105 @@
 
 - (void)dispose
 {
-    if (_itemOutputFrames)
+    if (_vFrames)
     {
-        [_itemOutputFrames removeAllObjects];
-        _itemOutputFrames = nil;
+        [_vFrames removeAllObjects];
+        _vFrames = nil;
+    }
+    
+    if (_aFrames)
+    {
+        [_aFrames removeAllObjects];
+        _aFrames = nil;
+    }
+    
+    if (_vSyncQueue)
+    {
+        _vSyncQueue = NULL;
+    }
+    
+    if (_aSyncQueue)
+    {
+        _aSyncQueue = NULL;
     }
 }
 
 #pragma mark -
 #pragma mark Public
 
-- (NSInteger)playerItemValidFramesCount
+- (void)addVideoFrame:(UDRenderFrame *)frame
 {
-    return self.itemOutputFrames.count;
+    __weak typeof(self) weakSelf = self;
+    dispatch_barrier_async(_vSyncQueue, ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (frame) {
+            [strongSelf.vFrames insertObject:frame atIndex:0];
+            
+            if (strongSelf.vFrames.count > kVideoFrameCount) {
+                [strongSelf.vFrames removeObjectsInRange:NSMakeRange(kVideoFrameCount, strongSelf.vFrames.count - kVideoFrameCount)];
+            }
+        }
+    });
 }
 
-- (void)addPlayerItemValidFrames:(UDRenderFrame *)pixelFrame
+- (UDRenderFrame *)getVideoFrame
 {
-    [self _addPlayerItemValidFrames:pixelFrame];
+    __block id obj;
+    dispatch_sync(_vSyncQueue, ^{
+        if (_vFrames.count > 0) {
+            obj = _vFrames.lastObject;
+        }
+    });
+    return obj;
 }
 
-- (void)removePlayerItemValidFrames:(UDRenderFrame *)pixelFrame
+- (void)removeVideoFrame:(UDRenderFrame *)frame
 {
-    if (!pixelFrame)
-    {
-        return;
-    }
-    
-    [self _removePlayerItemValidFrames:pixelFrame];
+    __weak typeof(self) weakSelf = self;
+    dispatch_barrier_async(_vSyncQueue, ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        
+        if (frame && [strongSelf.vFrames containsObject:frame]) {
+            [strongSelf.vFrames removeObject:frame];
+        }
+    });
 }
 
-- (UDRenderFrame *)getNextPlayerItemValidFrames
+- (void)addAudioFrame:(UDDemuxerFrame *)frame
 {
-    if (self.itemOutputFrames.count > 0)
-    {
-        return [self.itemOutputFrames lastObject];
-    }
-    
-    return nil;
+    __weak typeof(self) weakSelf = self;
+    dispatch_barrier_async(_aSyncQueue, ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (frame) {
+            [strongSelf.aFrames insertObject:frame atIndex:0];
+            
+            if (strongSelf.aFrames.count > kAudioFrameCount) {
+                [strongSelf.aFrames removeObjectsInRange:NSMakeRange(kAudioFrameCount, strongSelf.aFrames.count - kAudioFrameCount)];
+            }
+        }
+    });
 }
 
-#pragma mark -
-#pragma mark - Private
-
-- (void)_addPlayerItemValidFrames:(UDRenderFrame *)pixelFrame
+- (UDDemuxerFrame *)getAudioFrame
 {
-    if (!pixelFrame)
-    {
-        return;
-    }
-    [self.itemOutputFrames insertObject:pixelFrame atIndex:0];
-    
-    if (self.itemOutputFrames.count > kPlayerItemFrameCount) {
-        [self.itemOutputFrames removeObjectsInRange:NSMakeRange(kPlayerItemFrameCount, self.itemOutputFrames.count - kPlayerItemFrameCount)];
-    }
+    __block id obj;
+    dispatch_sync(_aSyncQueue, ^{
+        if (_aFrames.count > 0) {
+            obj = _aFrames.lastObject;
+        }
+    });
+    return obj;
 }
 
-- (void)_removePlayerItemValidFrames:(UDRenderFrame *)pixelFrame
+- (void)removeAudioFrame:(UDDemuxerFrame *)frame
 {
-    [self.itemOutputFrames removeObject:pixelFrame];
+    __weak typeof(self) weakSelf = self;
+    dispatch_barrier_async(_aSyncQueue, ^{
+        __strong typeof(weakSelf) strongSelf = weakSelf;
+        if (frame &&  [strongSelf.aFrames containsObject:frame]) {
+            [strongSelf.aFrames removeObject:frame];
+        }
+    });
 }
 
 @end
