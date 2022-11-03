@@ -98,6 +98,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		039921A92913567A001F05A0 /* UDRenderShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UDRenderShader.h; sourceTree = "<group>"; };
 		04034179247167640093ABBE /* libUDPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libUDPlayer.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0403418C247168110093ABBE /* UDLivePlayer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = UDLivePlayer.mm; sourceTree = "<group>"; };
 		0403418E247168110093ABBE /* UDLivePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UDLivePlayer.h; sourceTree = "<group>"; };
@@ -408,6 +409,7 @@
 				040341D424716C570093ABBE /* IUDRenderView.h */,
 				040341D024716C570093ABBE /* UDRenderView.h */,
 				040341D224716C570093ABBE /* UDRenderView.mm */,
+				039921A92913567A001F05A0 /* UDRenderShader.h */,
 			);
 			name = UDRenderView;
 			sourceTree = "<group>";

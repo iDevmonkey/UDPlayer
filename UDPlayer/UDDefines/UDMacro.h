@@ -12,6 +12,10 @@
 #include <syslog.h>
 #import <Foundation/Foundation.h>
 
+#define STRINGIZE(x) #x
+#define STRINGIZE2(x) STRINGIZE(x)
+#define SHADER_STRING(text) @ STRINGIZE2(text)
+
 /* Weakify & Strongify */
 #define UDWeakify(obj) __weak typeof(obj) weak_obj = obj;
 #define UDStrongify(obj) __strong typeof(weak_obj) strong_obj = weak_obj;

@@ -39,11 +39,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    txt_url.text =@"rtsp://admin:hZhrTSplivE1305@192.168.1.168/0";
     
-    _player = [[UDLivePlayer alloc] initWithConvas:screen];
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *str = [userDefaults objectForKey:@"RTSP_URL"];
+    if (str == nil || str.length <= 0) {
+        str = @"rtsp://192.168.1.168/0";
+    }
+    
+    
+    txt_url.text = str;
+    
+    _player = [[UDLivePlayer alloc] initWithConvas:screen4];
     _player.delegate = self;
     [_player setOption:@"rtp_type" intValue:1];//udp
+    [_player setOption:@"render_mode" intValue:1];
 //    [_player setOption:@"rtp_type" intValue:0];//tcp
 
 //    _player2 = [[UDLivePlayer alloc] initWithConvas:screen2];
@@ -103,6 +112,20 @@
 //    }else{
 //        [UIView showToastInfo:[NSString stringWithFormat:@"%@",error]];
 //    }
+}
+- (IBAction)onSave:(id)sender {
+    NSString *curUrl = txt_url.text;
+    curUrl = [curUrl stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    if (curUrl == nil || curUrl.length <= 0) {
+        return;
+    }
+    
+    NSUserDefaults * userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:curUrl forKey:@"RTSP_URL"];
+    [userDefaults synchronize];
+    
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

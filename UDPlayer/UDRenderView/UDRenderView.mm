@@ -12,6 +12,7 @@
 #import <OpenGLES/ES2/glext.h>
 #import "UDMacro.h"
 #import "UDRenderFrame.h"
+#import "UDRenderShader.h"
 
 #define kModuleName "UDRenderView"
 
@@ -26,7 +27,9 @@ enum
     UNIFORM_Y,
     UNIFORM_UV,
     UNIFORM_COLOR_CONVERSION_MATRIX,
-    NUM_UNIFORMS
+    UNIFORM_SCREEN_WIDTH,
+    UNIFORM_RENDER_MODE,
+    NUM_UNIFORMS,
 };
 GLint uniforms[NUM_UNIFORMS];
 
@@ -93,6 +96,7 @@ GLfloat quadTextureData[] = {
 
 @implementation UDRenderView
 @synthesize aspectFit = _aspectFit;
+@synthesize renderMode = _renderMode;
 
 #pragma mark - Life Cycle
 
@@ -103,14 +107,21 @@ GLfloat quadTextureData[] = {
 - (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     if ((self = [super initWithCoder:aDecoder])) {
-        [self initRenderView];
+        [self initRenderView: UDRenderModeNormal];
     }
     return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        [self initRenderView];
+        [self initRenderView: UDRenderModeNormal];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame renderMode:(UDRenderMode)renderMode {
+    if (self = [super initWithFrame:frame]) {
+        [self initRenderView: renderMode];
     }
     return self;
 }
@@ -160,9 +171,10 @@ GLfloat quadTextureData[] = {
 
 #pragma mark - Private
 
-- (void)initRenderView {
+- (void)initRenderView:(UDRenderMode)mode {
     self.userInteractionEnabled = NO;
     self.aspectFit = YES;
+    self.renderMode = mode;
     self.pixelbufferWidth = 0;
     self.pixelbufferHeight = 0;
     self.bufferType = UDPixelBufferTypeNV12;
@@ -316,15 +328,23 @@ GLfloat quadTextureData[] = {
     
     if (bufferType == UDPixelBufferTypeNV12) {
         if (self.lastBufferType != bufferType) {
+            CGFloat eWidth = self.bounds.size.width * [UIScreen mainScreen].scale;
+            
             glUseProgram(nv12Program);
             glUniform1i(uniforms[UNIFORM_Y], 0);
             glUniform1i(uniforms[UNIFORM_UV], 1);
             glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
+            glUniform1f(uniforms[UNIFORM_SCREEN_WIDTH], (GLfloat)eWidth);
+//            glUniform1i(uniforms[UNIFORM_RENDER_MODE], (GLint)(self.renderMode));
         }
     } else if (bufferType == UDPixelBufferTypeRGB) {
         if (self.lastBufferType != bufferType) {
+            CGFloat eWidth = self.bounds.size.width * [UIScreen mainScreen].scale;
+            
             glUseProgram(rgbProgram);
             glUniform1i(displayInputTextureUniform, 0);
+            glUniform1f(uniforms[UNIFORM_SCREEN_WIDTH], (GLfloat)eWidth);
+            glUniform1i(uniforms[UNIFORM_RENDER_MODE], (GLint)(self.renderMode));
         }
     }
     
@@ -432,15 +452,24 @@ GLfloat quadTextureData[] = {
     const GLchar *vsh = NULL;
     
     if (type == UDPixelBufferTypeNV12) {
-        fsh = NV12_fsh;
-        vsh = NV12_vsh;
+        if (_renderMode == UDRenderMode3D) {
+            fsh = (GLchar *)[NV12_fsh_3d UTF8String];
+            vsh = (GLchar *)[NV12_vsh_3d UTF8String];
+        } else {
+            fsh = NV12_fsh_0;
+            vsh = NV12_vsh_0;
+        }
 
         _nv12Program = program;
         
     } else if (type == UDPixelBufferTypeRGB) {
-        
-        fsh = RGB_fsh;
-        vsh = RGB_vsh;
+        if (_renderMode == UDRenderMode3D) {
+            fsh = (GLchar *)[RGB_fsh_3d UTF8String];
+            vsh = (GLchar *)[RGB_vsh_3d UTF8String];
+        } else {
+            fsh = RGB_fsh_0;
+            vsh = RGB_vsh_0;
+        }
         
         _rgbProgram = program;
     }
@@ -481,8 +510,12 @@ GLfloat quadTextureData[] = {
         uniforms[UNIFORM_Y] = glGetUniformLocation(program , "luminanceTexture");
         uniforms[UNIFORM_UV] = glGetUniformLocation(program, "chrominanceTexture");
         uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = glGetUniformLocation(program, "colorConversionMatrix");
+        uniforms[UNIFORM_SCREEN_WIDTH] = glGetUniformLocation(program , "screenWidth");
+        uniforms[UNIFORM_RENDER_MODE] = glGetUniformLocation(program , "renderMode");
     } else if (type == UDPixelBufferTypeRGB) {
         _displayInputTextureUniform = glGetUniformLocation(program, "inputImageTexture");
+        uniforms[UNIFORM_SCREEN_WIDTH] = glGetUniformLocation(program , "screenWidth");
+        uniforms[UNIFORM_RENDER_MODE] = glGetUniformLocation(program , "renderMode");
     }
     
     if (vertShader) {
@@ -613,14 +646,30 @@ precision mediump float;\
 uniform sampler2D luminanceTexture;\
 uniform sampler2D chrominanceTexture;\
 uniform mediump mat3 colorConversionMatrix;\
+uniform highp float screenWidth;\
+uniform highp int renderMode;\
 \
 void main()\
 {\
     mediump vec3 yuv;\
     lowp vec3 rgb;\
     \
-    yuv.x = texture2D(luminanceTexture, textureCoordinate).r;\
-    yuv.yz = texture2D(chrominanceTexture, textureCoordinate).ra - vec2(0.5, 0.5);\
+    lowp vec2 tc=textureCoordinate;\
+        lowp vec2 cl=textureCoordinate.xy;\
+        int column=int(mod(floor(screenWidth*cl.x),4.0));\
+        if(column == 1 || column == 3){\
+            gl_FragColor = vec4(0.0,0.0,0.0, 1.0);\
+            return; \
+        }\
+        else if(column == 2){\
+            tc=vec2(textureCoordinate.x/2.0,textureCoordinate.y);\
+        } \
+        else if(column == 0){ \
+            tc=vec2(textureCoordinate.x/2.0+0.5,textureCoordinate.y); \
+        } \
+    \
+    yuv.x = texture2D(luminanceTexture, tc).r;\
+    yuv.yz = texture2D(chrominanceTexture, tc).ra - vec2(0.5, 0.5);\
     rgb = colorConversionMatrix * yuv;\
     \
     gl_FragColor = vec4(rgb, 1);\

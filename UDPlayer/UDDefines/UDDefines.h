@@ -76,6 +76,11 @@ typedef struct {
     int    fps;
 } UDDecodeUserData;
 
+typedef NS_ENUM(int, UDRenderMode) {
+    UDRenderModeNormal = 0,
+    UDRenderMode3D = 1,
+};
+
 /*
  Error
  */

@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "UDRenderFrame.h"
+#import "UDDefines.h"
 
 #ifndef IUDRenderView_h
 #define IUDRenderView_h
@@ -15,6 +16,10 @@
 @protocol IUDRenderView <NSObject>
 
 @property (nonatomic, assign, getter=isAspectFit) BOOL aspectFit;
+
+@property (nonatomic, assign) UDRenderMode renderMode;
+
+- (instancetype)initWithFrame:(CGRect)frame renderMode:(UDRenderMode)renderMode;
 
 - (void)drawFrame:(UDRenderFrame *)frame;
 

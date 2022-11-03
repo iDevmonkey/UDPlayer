@@ -65,6 +65,7 @@ using namespace mediakit;
 @implementation UDPlayer
 {
     BOOL _aspectFit;
+    UDRenderMode _renderMode;
     
     shared_ptr<AudioDec> _aacDec;
 }
@@ -83,6 +84,8 @@ using namespace mediakit;
         _playerItem = [[UDPlayerItem alloc] init];
         
         _aspectFit = YES;
+        _renderMode = UDRenderModeNormal;
+        
         _starting = NO;
                 
         [self createDisplayLink];
@@ -348,7 +351,7 @@ using namespace mediakit;
     }
     
     if (_decoder) {
-        udlog_info("decode", "naleType: %d, pts: %d, dts:%d", demuxerFrame.naleType,demuxerFrame.pts, demuxerFrame.dts);
+//        udlog_info("decode", "naleType: %d, pts: %d, dts:%d", demuxerFrame.naleType,demuxerFrame.pts, demuxerFrame.dts);
         
         [_decoder startDecodeFrame:demuxerFrame];
     }
@@ -493,7 +496,7 @@ using namespace mediakit;
 
 - (UIView<IUDRenderView> *)renderView {
     if (_renderView == nil) {
-        _renderView = [[UDRenderView alloc] initWithFrame:_convasView.bounds];
+        _renderView = [[UDRenderView alloc] initWithFrame:_convasView.bounds renderMode:_renderMode];
         [_convasView insertSubview:_renderView atIndex:0];
     }
     
@@ -509,6 +512,12 @@ using namespace mediakit;
 
 - (void)setOption:(NSString *)key intValue:(int)value
 {
+    if ([key isEqualToString:@"render_mode"]) {
+        int v = MIN(MAX(0, value), 1);
+        _renderMode = (UDRenderMode)v;
+        return;
+    }
+    
     [_demuxer setOption:key intValue:value];
 }
 
