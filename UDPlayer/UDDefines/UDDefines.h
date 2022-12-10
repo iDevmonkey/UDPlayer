@@ -79,6 +79,8 @@ typedef struct {
 typedef NS_ENUM(int, UDRenderMode) {
     UDRenderModeNormal = 0,
     UDRenderMode3D = 1,
+    UDRenderModeLeft = 2,
+    UDRenderModeRight = 3,
 };
 
 /*

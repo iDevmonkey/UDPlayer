@@ -455,6 +455,12 @@ GLfloat quadTextureData[] = {
         if (_renderMode == UDRenderMode3D) {
             fsh = (GLchar *)[NV12_fsh_3d UTF8String];
             vsh = (GLchar *)[NV12_vsh_3d UTF8String];
+        } else if (_renderMode == UDRenderModeLeft) {
+            fsh = NV12_fsh_left;
+            vsh = NV12_vsh_left;
+        } else if (_renderMode == UDRenderModeRight) {
+            fsh = NV12_fsh_right;
+            vsh = NV12_vsh_right;
         } else {
             fsh = NV12_fsh_0;
             vsh = NV12_vsh_0;
@@ -466,6 +472,12 @@ GLfloat quadTextureData[] = {
         if (_renderMode == UDRenderMode3D) {
             fsh = (GLchar *)[RGB_fsh_3d UTF8String];
             vsh = (GLchar *)[RGB_vsh_3d UTF8String];
+        } else if (_renderMode == UDRenderModeLeft) {
+            fsh = RGB_fsh_left;
+            vsh = RGB_vsh_left;
+        } else if (_renderMode == UDRenderModeRight) {
+            fsh = RGB_fsh_right;
+            vsh = RGB_vsh_right;
         } else {
             fsh = RGB_fsh_0;
             vsh = RGB_vsh_0;

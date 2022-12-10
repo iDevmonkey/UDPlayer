@@ -9,6 +9,8 @@
 #ifndef UDRenderShader_h
 #define UDRenderShader_h
 
+//Mark - Normal - nv12
+
 const GLchar *NV12_fsh_0 = (const GLchar*)"varying highp vec2 textureCoordinate;\
 \
 precision mediump float;\
@@ -40,6 +42,8 @@ void main()\
     textureCoordinate = inputTextureCoordinate;\
 }";
 
+//Mark - Normal - rgb
+
 const GLchar *RGB_fsh_0 = (const GLchar*)"varying highp vec2 textureCoordinate;\
 \
 uniform sampler2D inputImageTexture;\
@@ -60,7 +64,7 @@ void main()\
     textureCoordinate = inputTextureCoordinate.xy;\
 }";
 
-///
+//Mark - 3D - nv12
 
 NSString *const NV12_vsh_3d = SHADER_STRING
 (
@@ -114,6 +118,7 @@ NSString *const NV12_fsh_3d = SHADER_STRING
  }
  );
 
+//Mark - 3D - rgb
 
 NSString *const RGB_vsh_3d = SHADER_STRING
 (
@@ -156,6 +161,116 @@ NSString *const RGB_fsh_3d = SHADER_STRING
      }
  }
  );
+
+//Mark - Left - nv12
+
+const GLchar *NV12_fsh_left = (const GLchar*)"varying highp vec2 textureCoordinate;\
+\
+precision mediump float;\
+\
+uniform sampler2D luminanceTexture;\
+uniform sampler2D chrominanceTexture;\
+uniform mediump mat3 colorConversionMatrix;\
+\
+void main()\
+{\
+    mediump vec3 yuv;\
+    lowp vec3 rgb;\
+    \
+    yuv.x = texture2D(luminanceTexture, textureCoordinate).r;\
+    yuv.yz = texture2D(chrominanceTexture, textureCoordinate).ra - vec2(0.5, 0.5);\
+    rgb = colorConversionMatrix * yuv;\
+    \
+    gl_FragColor = vec4(rgb, 1);\
+}";
+
+const GLchar *NV12_vsh_left = (const GLchar*)"attribute vec4 position;\
+attribute vec2 inputTextureCoordinate;\
+\
+varying vec2 textureCoordinate;\
+\
+void main()\
+{\
+    gl_Position = position;\
+    textureCoordinate = inputTextureCoordinate*vec2(0.5,1.0);\
+}";
+
+//Mark - Left - rgb
+
+const GLchar *RGB_fsh_left = (const GLchar*)"varying highp vec2 textureCoordinate;\
+\
+uniform sampler2D inputImageTexture;\
+\
+void main()\
+{\
+    gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\
+}";
+
+const GLchar *RGB_vsh_left = (const GLchar*)"attribute vec4 position;\
+attribute vec4 inputTextureCoordinate;\
+\
+varying vec2 textureCoordinate;\
+\
+void main()\
+{\
+    gl_Position = position;\
+    textureCoordinate = inputTextureCoordinate.xy*vec2(0.5,1.0);\
+}";
+
+//Mark - Right - nv12
+
+const GLchar *NV12_fsh_right = (const GLchar*)"varying highp vec2 textureCoordinate;\
+\
+precision mediump float;\
+\
+uniform sampler2D luminanceTexture;\
+uniform sampler2D chrominanceTexture;\
+uniform mediump mat3 colorConversionMatrix;\
+\
+void main()\
+{\
+    mediump vec3 yuv;\
+    lowp vec3 rgb;\
+    \
+    yuv.x = texture2D(luminanceTexture, textureCoordinate).r;\
+    yuv.yz = texture2D(chrominanceTexture, textureCoordinate).ra - vec2(0.5, 0.5);\
+    rgb = colorConversionMatrix * yuv;\
+    \
+    gl_FragColor = vec4(rgb, 1);\
+}";
+
+const GLchar *NV12_vsh_right = (const GLchar*)"attribute vec4 position;\
+attribute vec2 inputTextureCoordinate;\
+\
+varying vec2 textureCoordinate;\
+\
+void main()\
+{\
+    gl_Position = position;\
+    textureCoordinate = inputTextureCoordinate*vec2(0.5,1.0) + vec2(0.5,0.0);\
+}";
+
+//Mark - Right - rgb
+
+const GLchar *RGB_fsh_right = (const GLchar*)"varying highp vec2 textureCoordinate;\
+\
+uniform sampler2D inputImageTexture;\
+\
+void main()\
+{\
+    gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\
+}";
+
+const GLchar *RGB_vsh_right = (const GLchar*)"attribute vec4 position;\
+attribute vec4 inputTextureCoordinate;\
+\
+varying vec2 textureCoordinate;\
+\
+void main()\
+{\
+    gl_Position = position;\
+    textureCoordinate = inputTextureCoordinate.xy*vec2(0.5,1.0) + vec2(0.5,0.0);\
+}";
 
 
 #endif /* UDRenderShader_h */

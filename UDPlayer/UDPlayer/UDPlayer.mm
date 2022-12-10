@@ -513,7 +513,7 @@ using namespace mediakit;
 - (void)setOption:(NSString *)key intValue:(int)value
 {
     if ([key isEqualToString:@"render_mode"]) {
-        int v = MIN(MAX(0, value), 1);
+        int v = MIN(MAX(0, value), 3);
         _renderMode = (UDRenderMode)v;
         return;
     }
